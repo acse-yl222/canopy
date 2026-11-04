@@ -1,0 +1,202 @@
+{
+  "source": "Local Imperial Corridor 3D (Copy)/data/scene-meta.json",
+  "source_sha256": "710aebe8a1d304f5871d54e8dd81f73a7086be0cddd839ab340c2a4aeec5c0b7",
+  "source_metadata": {
+    "overture_release": "2026-10-21.0",
+    "license": "Overture Maps (ODbL for OSM-derived features; see docs.overturemaps.org)",
+    "layers": {
+      "buildings": "870a5d01bcb17f4d8dd03d27a0acd8af02bfed257eef6979ddfa3727f81cc045",
+      "building_parts": "6f70edd53db4db2793dff64391968d2ea266d6f676dbc6640648c89932d13299",
+      "segments": "7720c30077ce090faa64743ac5f8b4ff2b2cd2e857ada051af87d4bcc7f8cf28",
+      "land_use": "f6b70512ac47fda131e8fd41d25e7d56bef0edee7b202b6f499bbad100bdc891",
+      "land_cover": "ac19f33d76cf96e41d984771b592dbad5e247a4c329df728683cd11180f12c3d",
+      "land": "3835289180329010e78614a9398b41557a42af618103090ab8bcc802f2a99de8",
+      "water": "381d282f4ae3c191fa43f1400a07a0520e1d4a7d4d69b84255390a5b068490b5",
+      "infrastructure": "ae197f36d1b8039ac053a85d6b45688585f17294a5462eef1b62a0152fca9318"
+    },
+    "conflicts_resolved": {
+      "pavements_narrowed": 4738,
+      "road_segments_covered": 4540,
+      "road_segments_over_water": 737,
+      "roads_narrowed": 4089,
+      "trees_dropped_in_buildings": 67,
+      "trees_dropped_in_water": 9,
+      "trees_moved_to_kerb": 1308,
+      "vessels": 105
+    },
+    "terrain": {
+      "grid": [
+        821,
+        821
+      ],
+      "dx_m": 10.0,
+      "min_m": -2.58,
+      "max_m": 68.26,
+      "water_levels": 163,
+      "sloped_buildings": 1613,
+      "building_slope_p95_m": 1.53
+    }
+  },
+  "source_half_m": 4000.0,
+  "render_half_m": 4096,
+  "trees": 13893,
+  "hedges": 824,
+  "areas": 4983,
+  "water": 252,
+  "water_polygons": 163,
+  "water_lines": 89,
+  "paths": 15893,
+  "area_classes": {
+    "wetland": 39,
+    "track": 43,
+    "sand": 43,
+    "railway": 160,
+    "plaza": 208,
+    "playground": 270,
+    "pitch": 870,
+    "grave_yard": 12,
+    "cemetery": 12,
+    "bare": 133,
+    "allotments": 26,
+    "grass": 1464,
+    "scrub": 134,
+    "wood": 400,
+    "park": 1169
+  },
+  "triangles": 364738,
+  "layers": [
+    {
+      "name": "wetland",
+      "file": "00-wetland.f32",
+      "color": "#b6b19d",
+      "vertices": 4197,
+      "polygons": 182
+    },
+    {
+      "name": "track",
+      "file": "01-track.f32",
+      "color": "#b6b19d",
+      "vertices": 4827,
+      "polygons": 72
+    },
+    {
+      "name": "sand",
+      "file": "02-sand.f32",
+      "color": "#b6b19d",
+      "vertices": 2973,
+      "polygons": 165
+    },
+    {
+      "name": "railway",
+      "file": "03-railway.f32",
+      "color": "#b6b19d",
+      "vertices": 18630,
+      "polygons": 351
+    },
+    {
+      "name": "plaza",
+      "file": "04-plaza.f32",
+      "color": "#b6b19d",
+      "vertices": 20442,
+      "polygons": 769
+    },
+    {
+      "name": "playground",
+      "file": "05-playground.f32",
+      "color": "#b6b19d",
+      "vertices": 10641,
+      "polygons": 343
+    },
+    {
+      "name": "pitch",
+      "file": "06-pitch.f32",
+      "color": "#79a66e",
+      "vertices": 8514,
+      "polygons": 762
+    },
+    {
+      "name": "grave_yard",
+      "file": "07-grave_yard.f32",
+      "color": "#b6b19d",
+      "vertices": 921,
+      "polygons": 36
+    },
+    {
+      "name": "cemetery",
+      "file": "08-cemetery.f32",
+      "color": "#819b73",
+      "vertices": 11628,
+      "polygons": 166
+    },
+    {
+      "name": "bare",
+      "file": "09-bare.f32",
+      "color": "#b6b19d",
+      "vertices": 12231,
+      "polygons": 220
+    },
+    {
+      "name": "allotments",
+      "file": "10-allotments.f32",
+      "color": "#b6b19d",
+      "vertices": 1485,
+      "polygons": 38
+    },
+    {
+      "name": "grass",
+      "file": "11-grass.f32",
+      "color": "#93ad70",
+      "vertices": 67410,
+      "polygons": 1741
+    },
+    {
+      "name": "scrub",
+      "file": "12-scrub.f32",
+      "color": "#7d9460",
+      "vertices": 5541,
+      "polygons": 132
+    },
+    {
+      "name": "wood",
+      "file": "13-wood.f32",
+      "color": "#5e824c",
+      "vertices": 52512,
+      "polygons": 1287
+    },
+    {
+      "name": "park",
+      "file": "14-park.f32",
+      "color": "#8da46c",
+      "vertices": 192738,
+      "polygons": 5235
+    },
+    {
+      "name": "water",
+      "file": "15-water.f32",
+      "color": "#4b829b",
+      "vertices": 23448,
+      "polygons": 136
+    },
+    {
+      "name": "walk-cycle-paths",
+      "file": "16-walk-cycle-paths.f32",
+      "color": "#c1b8a0",
+      "vertices": 656070,
+      "polygons": 8428
+    },
+    {
+      "name": "unclassified-base",
+      "file": "17-unclassified-base.f32",
+      "color": "#b5b2a4",
+      "vertices": 6,
+      "polygons": 1
+    }
+  ],
+  "notes": [
+    "Original source coordinates and polygon holes retained without simplification in source/scene-meta.json. Rendering uses Float32 GPU coordinates; triangulation and clipping use Float64.",
+    "Trees: third value is deterministic appearance seed, not height. Species and height inferred using original six models and placement rules. No synthetic infill trees.",
+    "Hedges: original 1.5 m height and 0.9 m width rules; inferred dimensions, exact mapped centreline.",
+    "Source covers 8000 m square; outer 96 m rim is unclassified, with no invented vegetation.",
+    "Mapped area overlap priority: specific classes then grass, scrub, wood, park; subtract building footprints, motor roads, paths and water. No raster contours."
+  ]
+}

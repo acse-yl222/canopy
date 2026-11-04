@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.1.0",
+  "scene_id": "imperial_corridor_8km",
+  "simulation": "vector_road_presentation",
+  "run_id": "vector_roads_20261103",
+  "status": "complete",
+  "created_at": "2026-11-03T11:00:51.507330+00:00",
+  "provenance": {
+    "code_revision": "f98077d6c2ba0dd39b6486b1a2ba23f49519ab31",
+    "dirty": true,
+    "parameters": {
+      "simulation_rerun": false,
+      "lane_widths": "source SUMO lane widths",
+      "vertical_presentation": "flat y=.025 road surface and .03 junction surface, original source heights retained in JSON",
+      "limits": [
+        "Full source motor-road network; pedestrian-, bicycle- and rail-only lanes were excluded upstream.",
+        "Lane widths and junction outlines are vector geometry. Source precision is 0.1 m; this is not a surveyed road model.",
+        "Display is flattened to match the existing buildings and recorded vehicles. Original source elevations and estimated bridge classifications are retained in source JSON.",
+        "Optional lane boundaries show geometric widths, not surveyed painted markings.",
+        "Only display polygons are clipped to the 8192 m domain; original paths and topology are preserved."
+      ],
+      "dependencies": {
+        "shapely": "2.2.0",
+        "mapbox_earcut": "2.1.0",
+        "numpy": "2.5.1"
+      },
+      "landcover_recipe": "2048x2048 RGB; default (181,178,164), green (100,142,88), water (66,119,145); water overrides green; flip rows for north-up PNG. Roads omitted from texture."
+    },
+    "inputs": [
+      {
+        "id": "road_network.json",
+        "sha256": "3e615d0d8c29daefa34224bf79e87b8080ff78bec813573020064c605b00613c"
+      },
+      {
+        "id": "terrain_4m_20261030/green_4m_yx.npy",
+        "sha256": "5104f29bfa0cae9b8d048ddb414b75192e5139f85eb5a8d20398b9fb959069c0"
+      },
+      {
+        "id": "terrain_4m_20261030/water_4m_yx.npy",
+        "sha256": "be6466b09b6970172a58dc0728e77ae16de60eb7ed8250ea0a24d64e2a2a3053"
+      }
+    ]
+  },
+  "spatial": {
+    "frame": "ENU",
+    "units": "m",
+    "origin": {
+      "longitude": -0.200473,
+      "latitude": 51.506427,
+      "height_m": 0,
+      "vertical_datum": "flattened presentation, not terrain elevation"
+    },
+    "bounds_m": {
+      "min": [
+        -4096,
+        -4096,
+        0
+      ],
+      "max": [
+        4096,
+        4096,
+        0.055
+      ]
+    }
+  },
+  "time": {
+    "unit": "s",
+    "samples": []
+  },
+  "layers": [
+    {
+      "id": "roads",
+      "kind": "mesh",
+      "format": "glb",
+      "asset": "roads.glb",
+      "sampling": "static",
+      "encoding": {
+        "coordinate_frame": "glTF-y-up"
+      },
+      "display": {
+        "widget": "mesh",
+        "capabilities": []
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "landcover.png",
+      "asset": "landcover.png",
+      "sha256": "f1d7c67e0af17a4d7152f0a065cad3d8b286e135a541071ca326d85f8cbb3fe3",
+      "media_type": "image/png"
+    },
+    {
+      "id": "requirements.txt",
+      "asset": "requirements.txt",
+      "sha256": "0a07cf67fc27ed9435d43d8ab11f7ca4f4433f1cbe146329d3b9a21382768c93",
+      "media_type": "text/plain"
+    },
+    {
+      "id": "road_network.json",
+      "asset": "road_network.json",
+      "sha256": "3e615d0d8c29daefa34224bf79e87b8080ff78bec813573020064c605b00613c",
+      "media_type": "application/json"
+    },
+    {
+      "id": "road_network_0.json",
+      "asset": "road_network_0.json",
+      "sha256": "76b5ec144442adb0de313f90f2522b8c29b846f7778b0b22422bdd07218fb261",
+      "media_type": "application/json"
+    },
+    {
+      "id": "road_network_1.json",
+      "asset": "road_network_1.json",
+      "sha256": "9022b4839d8c525425fdf37f76dc145563dfc2e687c2e50856ed2182048d45f9",
+      "media_type": "application/json"
+    },
+    {
+      "id": "road_network_2.json",
+      "asset": "road_network_2.json",
+      "sha256": "92756a51a8503e16674d1bea95e99cc1f9066a8e7bee801f2e4e4ff4a19dd5f9",
+      "media_type": "application/json"
+    },
+    {
+      "id": "roads-audit.json",
+      "asset": "roads-audit.json",
+      "sha256": "dae61d15eb97750a6a478a15220d9ec4c2f90f961afcb26df97c09a1730c32db",
+      "media_type": "application/json"
+    },
+    {
+      "id": "source_snapshot",
+      "asset": "source_snapshot.py",
+      "sha256": "6601612b7e6f4091f9805ddab6e725669258d9581a093061c6fad7fb5321d1b4",
+      "media_type": "text/plain"
+    }
+  ]
+}

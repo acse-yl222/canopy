@@ -1,0 +1,629 @@
+[
+  {
+    "file": "solar_20260621.npy",
+    "shape": [
+      99,
+      2048,
+      2048
+    ],
+    "dtype": "<f2",
+    "source": "input/retained_physics_20261102/solar_10min_20261030/2026-06-21/ghi_hourly_4m_tyx_float16.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74"
+      },
+      {
+        "frame": 98,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.00101470947265625,
+          0.0010156631469726562,
+          0.001148223876953125,
+          0.0011472702026367188
+        ],
+        "raw_sha256": "723215b7ed26b48e833086a79d5434d57eae8d5611dfccefaf333940d72c0bbe"
+      }
+    ]
+  },
+  {
+    "file": "shadow_20260621.npy",
+    "shape": [
+      99,
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "input/retained_physics_20261102/solar_10min_20261030/2026-06-21/shadow_hourly_4m_tyx_u8.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "raw_sha256": "b5d73c4a8fd1c9f27351c67df147fca43bc64063ad151def836d07d52abee746"
+      },
+      {
+        "frame": 98,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "5465ea0a16ebdfdaba1962eec35a57dfb7f4e3862e2b02bb16dd716c1b8c078f"
+      }
+    ]
+  },
+  {
+    "file": "solar_20261221.npy",
+    "shape": [
+      47,
+      2048,
+      2048
+    ],
+    "dtype": "<f2",
+    "source": "input/retained_physics_20261102/solar_10min_20261030/2026-12-21/ghi_hourly_4m_tyx_float16.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          5.960464477539063e-08,
+          5.960464477539063e-08,
+          5.960464477539063e-08,
+          5.960464477539063e-08
+        ],
+        "raw_sha256": "4ec6930c525a3d7e260586493a367eaf9cb78d222a346f52265914342deaac97"
+      },
+      {
+        "frame": 46,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74"
+      }
+    ]
+  },
+  {
+    "file": "shadow_20261221.npy",
+    "shape": [
+      47,
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "input/retained_physics_20261102/solar_10min_20261030/2026-12-21/shadow_hourly_4m_tyx_u8.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "raw_sha256": "758658eff461398550ca640d7c1becfcc1afd65435b6754890319f9f9d467e6c"
+      },
+      {
+        "frame": 46,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "raw_sha256": "addf39ae3f5493e1177ec7c274094035eab5384988c8dde5094bd84b0e76dc2d"
+      }
+    ]
+  },
+  {
+    "file": "poll.npy",
+    "shape": [
+      21,
+      2048,
+      2048
+    ],
+    "dtype": "<f4",
+    "source": "input/retained_physics_20261102/pollution_20261030/concentration.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e"
+      },
+      {
+        "frame": 20,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.12020789831876755,
+          0.0035154896322637796,
+          0.0008719658944755793,
+          3.212441701538893e-10
+        ],
+        "raw_sha256": "0cac88e1e435bdc7582f1bf7e9eeaa4df9a703cfa5e0913aa66c110aac5cce84"
+      }
+    ]
+  },
+  {
+    "file": "flood.npy",
+    "shape": [
+      181,
+      2048,
+      2048
+    ],
+    "dtype": "<f2",
+    "source": "retained flood frames",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "7ac39b5886e4266ebe2555da6155357aaf2ef843e1c0bed61048c40c8ba0cc99"
+      },
+      {
+        "frame": 180,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "25a3d49bf92ea19074f72ecf6d6e71a954d4124ea664ba9054c2d1ab5d975c4c"
+      }
+    ]
+  },
+  {
+    "file": "temp.npy",
+    "shape": [
+      11,
+      256,
+      256
+    ],
+    "dtype": "<f2",
+    "source": "input/local_viewer_20261102/scenes/imperial_corridor_8km/physics/temp.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          32768,
+          65535
+        ],
+        "values": [
+          20.0,
+          20.0,
+          20.0,
+          20.0
+        ],
+        "raw_sha256": "7a68df32e72b1f79d874ed4e5f9e3ddfe94dc8384742a3d6a412834964ee75e3"
+      },
+      {
+        "frame": 10,
+        "indices": [
+          100,
+          1000,
+          32768,
+          65535
+        ],
+        "values": [
+          29.4375,
+          48.15625,
+          20.09375,
+          30.171875
+        ],
+        "raw_sha256": "02897f8cf8684439582a45f3ffe852d7039088d15a97927b7447c3f16454a750"
+      }
+    ]
+  },
+  {
+    "file": "wind.npy",
+    "shape": [
+      1,
+      3,
+      2048,
+      2048
+    ],
+    "dtype": "<f4",
+    "source": "final_ground_4m.npy at model step 300",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          6291456,
+          12582911
+        ],
+        "values": [
+          0.03545595332980156,
+          0.26477864384651184,
+          -0.26405069231987,
+          -0.010791923850774765
+        ],
+        "raw_sha256": "603333bf235267cd1d7717839272b09861d5e6486653d5fbac8234c28d3cf20f"
+      }
+    ]
+  },
+  {
+    "file": "wind_history.npy",
+    "shape": [
+      301,
+      3,
+      1024,
+      1024
+    ],
+    "dtype": "<f4",
+    "source": "planes_XXXX.npy[0]: exact first saved height, 6 m",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          1572864,
+          3145727
+        ],
+        "values": [
+          1.0070298910140991,
+          1.0084956884384155,
+          -0.009273058734834194,
+          -0.010039988905191422
+        ],
+        "raw_sha256": "438e8ff8ecd6a984adab9a3586f8853e72811f98d5c59218d66b87e441d04881"
+      },
+      {
+        "frame": 300,
+        "indices": [
+          100,
+          1000,
+          1572864,
+          3145727
+        ],
+        "values": [
+          0.19021543860435486,
+          -0.17822757363319397,
+          -0.26405069231987,
+          -0.007353689521551132
+        ],
+        "raw_sha256": "914cf7a9eb32dce52aaa39d16fef317f732bd18df02a7c33ba8458b479c63707"
+      }
+    ]
+  },
+  {
+    "file": "masks/wind_invalid_zyx.npy",
+    "shape": [
+      1,
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "source occupancy mask at 6 m or source tracer invalid mask",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "9c45a32b171fb7e3623fb6115a340526fd9d72df413245c30cd26d32e3da7fb9"
+      }
+    ]
+  },
+  {
+    "file": "masks/wind_history_invalid.npy",
+    "shape": [
+      1,
+      1024,
+      1024
+    ],
+    "dtype": "|u1",
+    "source": "source occupancy mask at 6 m or source tracer invalid mask",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          524288,
+          1048575
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "d831135324733aa3c02715e8d90a445fe15bf87dfc2d5380db760d5574187df3"
+      }
+    ]
+  },
+  {
+    "file": "masks/poll_invalid.npy",
+    "shape": [
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "source occupancy mask at 6 m or source tracer invalid mask",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "9c45a32b171fb7e3623fb6115a340526fd9d72df413245c30cd26d32e3da7fb9"
+      }
+    ]
+  },
+  {
+    "file": "masks/solar_invalid.npy",
+    "shape": [
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "nonfinite dtm_4m_yx.npy only",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8"
+      }
+    ]
+  },
+  {
+    "file": "masks/shadow_invalid.npy",
+    "shape": [
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "nonfinite dtm_4m_yx.npy only",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8"
+      }
+    ]
+  },
+  {
+    "file": "masks/flood_invalid.npy",
+    "shape": [
+      2048,
+      2048
+    ],
+    "dtype": "|u1",
+    "source": "nonfinite dtm_4m_yx.npy only",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          2097152,
+          4194303
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8"
+      }
+    ]
+  },
+  {
+    "file": "masks/temp_invalid.npy",
+    "shape": [
+      256,
+      256
+    ],
+    "dtype": "|u1",
+    "source": "input/local_viewer_20261102/scenes/imperial_corridor_8km/physics/masks/temp_invalid.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          32768,
+          65535
+        ],
+        "values": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "2887ed59d4cf5839c9fc64f235e4c210f2200f09a91f99b95d82df2143e9f823"
+      }
+    ]
+  },
+  {
+    "file": "masks/lite_footprint.npy",
+    "shape": [
+      1024,
+      1024
+    ],
+    "dtype": "|b1",
+    "source": "input/local_viewer_20261102/scenes/imperial_corridor_8km/physics/masks/lite_footprint.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          524288,
+          1048575
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "ccca47c31cc48ffe60aeb33d57a5ce834ecab084b8be9a797386807c75a7faea"
+      }
+    ]
+  },
+  {
+    "file": "masks/lite_height.npy",
+    "shape": [
+      1024,
+      1024
+    ],
+    "dtype": "<f4",
+    "source": "input/local_viewer_20261102/scenes/imperial_corridor_8km/physics/masks/lite_height.npy",
+    "samples": [
+      {
+        "frame": 0,
+        "indices": [
+          100,
+          1000,
+          524288,
+          1048575
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_sha256": "31eaca79c9df453d6479ef6560323ed283b7d0744b4a0d85fe969352a9ab6cd2"
+      }
+    ]
+  }
+]
