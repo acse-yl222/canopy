@@ -1,0 +1,131 @@
+{
+  "method": "Exact polygon difference against source lane/junction footprints where road XYZ intersects terrain; constrained triangulation preserves boundaries and holes. No raster masks.",
+  "layers": [
+    {
+      "name": "wetland",
+      "file": "00-wetland.f32.gz",
+      "vertices": 4200,
+      "source_area_m2": 60557.58289839327,
+      "clipped_area_m2": 60557.58289771551
+    },
+    {
+      "name": "track",
+      "file": "01-track.f32.gz",
+      "vertices": 4824,
+      "source_area_m2": 124017.9016279691,
+      "clipped_area_m2": 124017.90162796911
+    },
+    {
+      "name": "sand",
+      "file": "02-sand.f32.gz",
+      "vertices": 3000,
+      "source_area_m2": 8435.924300903454,
+      "clipped_area_m2": 8435.923861301615
+    },
+    {
+      "name": "railway",
+      "file": "03-railway.f32.gz",
+      "vertices": 19299,
+      "source_area_m2": 1605193.6015089294,
+      "clipped_area_m2": 1605193.5820264104
+    },
+    {
+      "name": "plaza",
+      "file": "04-plaza.f32.gz",
+      "vertices": 21300,
+      "source_area_m2": 186275.95509957292,
+      "clipped_area_m2": 186275.89718586614
+    },
+    {
+      "name": "playground",
+      "file": "05-playground.f32.gz",
+      "vertices": 10677,
+      "source_area_m2": 180472.5106918082,
+      "clipped_area_m2": 180472.51020802432
+    },
+    {
+      "name": "pitch",
+      "file": "06-pitch.f32.gz",
+      "vertices": 8520,
+      "source_area_m2": 956826.5856214424,
+      "clipped_area_m2": 956826.5855370755
+    },
+    {
+      "name": "grave_yard",
+      "file": "07-grave_yard.f32.gz",
+      "vertices": 936,
+      "source_area_m2": 23693.817956341427,
+      "clipped_area_m2": 23693.817936598574
+    },
+    {
+      "name": "cemetery",
+      "file": "08-cemetery.f32.gz",
+      "vertices": 11667,
+      "source_area_m2": 744539.2910577694,
+      "clipped_area_m2": 744539.2910577694
+    },
+    {
+      "name": "bare",
+      "file": "09-bare.f32.gz",
+      "vertices": 12666,
+      "source_area_m2": 792182.5878962846,
+      "clipped_area_m2": 792182.5756657409
+    },
+    {
+      "name": "allotments",
+      "file": "10-allotments.f32.gz",
+      "vertices": 1542,
+      "source_area_m2": 144296.43196315054,
+      "clipped_area_m2": 144296.4315385858
+    },
+    {
+      "name": "grass",
+      "file": "11-grass.f32.gz",
+      "vertices": 67902,
+      "source_area_m2": 1946045.041741488,
+      "clipped_area_m2": 1946045.0237212016
+    },
+    {
+      "name": "scrub",
+      "file": "12-scrub.f32.gz",
+      "vertices": 5556,
+      "source_area_m2": 182832.67410790315,
+      "clipped_area_m2": 182832.6738979727
+    },
+    {
+      "name": "wood",
+      "file": "13-wood.f32.gz",
+      "vertices": 52650,
+      "source_area_m2": 2157730.05231806,
+      "clipped_area_m2": 2157730.0400020527
+    },
+    {
+      "name": "park",
+      "file": "14-park.f32.gz",
+      "vertices": 194631,
+      "source_area_m2": 5096024.692579527,
+      "clipped_area_m2": 5096024.592678518
+    },
+    {
+      "name": "water",
+      "file": "15-water.f32.gz",
+      "vertices": 26655,
+      "source_area_m2": 2579920.366673621,
+      "clipped_area_m2": 2568233.470028628
+    },
+    {
+      "name": "walk-cycle-paths",
+      "file": "16-walk-cycle-paths.f32.gz",
+      "vertices": 714723,
+      "source_area_m2": 2326767.1135005476,
+      "clipped_area_m2": 2326766.0296123517
+    },
+    {
+      "name": "unclassified-base",
+      "file": "17-unclassified-base.f32.gz",
+      "vertices": 899079,
+      "source_area_m2": 67108864.0,
+      "clipped_area_m2": 61207231.155440986
+    }
+  ]
+}

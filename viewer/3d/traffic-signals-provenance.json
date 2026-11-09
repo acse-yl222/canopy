@@ -1,0 +1,16 @@
+{
+  "source_viewer": "https://github.com/acse-yl222/physics-grounded-4d-world-model-framework/blob/pages/scenes/imperial_corridor/app.mjs",
+  "viewer_sha256": "da437b8a6b9a6f6879f482d0c593873f549d65b373b93cc48ad46981d3dc40d1",
+  "source_scene": "https://raw.githubusercontent.com/acse-yl222/physics-grounded-4d-world-model-framework/e45d08934593fd3729f22dc0fd128acc3b519cac/project/imperial_corridor/input/export-v1/data/scene-meta.json",
+  "count": 1801,
+  "placement_columns": [
+    "east_m",
+    "north_m",
+    "yaw_radians",
+    "unused_by_original_renderer"
+  ],
+  "geometry": "Original high-detail traffic_signal asset; dimensions unchanged; ENU z-up converted to viewer y-up; base elevation flattened to existing roads",
+  "phases": "Unavailable. Original asset states: Aspects drawn red/amber/green, not timed. No synthesized phases or vehicle control.",
+  "road_network_sha256": "713d16adbd2b3478134c285c3a68709dcd1a3fc370e6e2b9079ce4c291a94180",
+  "traffic_sha256": "74d45a00093614b5da1f99f9908d2bd51205ab26b0acb572bf61ddd63f899d61"
+}

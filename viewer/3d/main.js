@@ -31,6 +31,7 @@ import { EXPANSION_BATCHES, installExpansion } from './expansion.js';
 import { createTransport } from './transport.js';
 import { createTraffic } from './traffic.js';
 import { createDetailTiles } from './complete-detail-tiles.js';
+import {loadCorridorTerrain, currentTerrain} from './corridor-terrain.js';
 import { createCorridorContext } from './corridor-context.js';
 import { recordedFrame } from '../scene-run.js';
 
@@ -39,6 +40,7 @@ import { recordedFrame } from '../scene-run.js';
 // the masks, the field layers (files, frame counts, clocks, display ranges) and the camera focus. South Kensington also
 // switches on the traffic / UAV / bird replay, the station tile, the OSM supplement and the building refinements.
 const SCENE = await loadScene();
+if (SCENE.corridor_context) await loadCorridorTerrain(SCENE.url);
 if (SCENE.wind_history) {
   SCENE.layers.wind = SCENE.wind_history;
   SCENE.masks.solid_wind.file = 'masks/wind_history_invalid.npy';
@@ -218,6 +220,7 @@ function setupSceneUI() {
       ]
     : [
         ['overview', 'Overview'],
+        ...(SCENE.id === 'imperial_corridor_8km' ? [['whiteCity', 'White City campus'], ['traffic', 'Traffic']] : []),
         ...(HAS_UAV_LAYER ? [['uavs', 'UAVs']] : []),
         ...(SCENE.traffic ? [['trafficMap', 'Traffic map']] : []),
       ]; // the close-up traffic and transport orbits stay reachable by ?shot=traffic|transport
@@ -1393,6 +1396,7 @@ const RATES = {
     [1, '1×'],
     [2, '2×'],
     [4, '4×'],
+    [8, '8×'],
     [10, '10×'],
   ],
   fields: [
@@ -1416,6 +1420,7 @@ function setRateOptions(kind, value) {
   ui.rate.value = String(value);
 }
 ui.play.addEventListener('click', () => {
+  if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {corridorContext.setPlaying(!corridorContext.playing);return;}
   if (section === 'campus' && replayLayer) {
     replayLayer.playing = !replayLayer.playing;
     ui.play.textContent = replayLayer.playing ? '❚❚' : '▶';
@@ -1427,6 +1432,7 @@ ui.play.addEventListener('click', () => {
   } else setPlaying(!state.playing);
 });
 ui.rate.addEventListener('change', () => {
+  if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {document.querySelector('#corridor-traffic-rate').value=ui.rate.value;return;}
   if (section === 'fields' && seqMode()) fieldRateOverrides[state.phase] = +ui.rate.value;
   if (section === 'campus' && uavLayer && tour.shot === 'uavs') {
     uavLayer.speed = +ui.rate.value;
@@ -1437,6 +1443,7 @@ ui.rate.addEventListener('change', () => {
   else if (state.playing) setPlaying(true);
 });
 ui.step.addEventListener('input', () => {
+  if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {const slider=document.querySelector('#corridor-traffic-step');slider.value=ui.step.value;slider.dispatchEvent(new Event('input'));return;}
   if (section === 'campus' && uavLayer && tour.shot === 'uavs') {
     uavLayer.update(+ui.step.value);
     invalidate();
@@ -1762,6 +1769,17 @@ function campusPoseDeg(azDeg) {
 // Plain site tour for scenes without a replay: a slow orbit around the focus (then, with a transport layer, a wide orbit
 // over the network), then (auto loop) the fields.
 const TOUR_SHOTS = {
+  whiteCity: {
+    // Centre of the existing MSRH, I-HUB, Uren and Public Health landmark meshes,
+    // in the corridor's viewer coordinates (east, up, negative north).
+    fixed: () => ({
+      target: new THREE.Vector3(-1700, 15, -1070),
+      pos: new THREE.Vector3(-2070, 390, -610),
+    }),
+    dur: Infinity, // A location shortcut stays put until the user navigates away.
+    label: () => 'Imperial College · White City campus',
+    time: () => 'White City campus · drag to explore',
+  },
   uavs: {
     fixed: () => {
       const d = fitDistance();
@@ -1781,11 +1799,12 @@ const TOUR_SHOTS = {
     time: () => `Overview · orbiting ${FOCUS.label ?? SCENE.title}`,
   },
   traffic: {
+    ...(SCENE.corridor_context ? {fixed: () => ({target:new THREE.Vector3(-1710,1,-910),pos:new THREE.Vector3(-1800,100,-790)})} : {}),
     dist: 0.55,
     elev: 48,
-    dur: 18000,
-    label: () => `${SCENE.traffic?.label ?? 'Traffic'} · cars and signal states of the SUMO run`,
-    time: () => (traffic ? `Replay ${trafficTime(traffic.t)} · ${traffic.speed}×` : 'Traffic'),
+    dur: SCENE.corridor_context ? Infinity : 18000,
+    label: () => SCENE.corridor_context ? 'Traffic · recorded AM peak · illustrative vehicle bodies' : `${SCENE.traffic?.label ?? 'Traffic'} · cars and signal states of the SUMO run`,
+    time: () => (SCENE.corridor_context ? (document.querySelector('#corridor-traffic-time')?.textContent ?? 'Loading recorded traffic') : traffic ? `Replay ${trafficTime(traffic.t)} · ${traffic.speed}×` : 'Traffic'),
   },
   trafficMap: {
     fixed: () => overheadPose(),
@@ -1971,6 +1990,11 @@ function runCampus(shot = 'overview') {
   } else {
     ui.step.disabled = true;
     ui.rate.disabled = true;
+  }
+  if (SCENE.corridor_context && shot === 'traffic') {
+    const toggle=document.querySelector('#corridor-traffic-visible');
+    if(toggle){toggle.checked=true;toggle.dispatchEvent(new Event('change'));}
+    window.corridorContext?.setPlaying(true);
   }
   if (replayLayer) replayLayer.startShot(shot);
   else startTour(TOUR_SHOTS[shot] ? shot : 'overview');
@@ -2279,7 +2303,14 @@ function animate(now) {
     return;
   }
   const elapsed = Math.max(0, now - last);
+  currentTerrain()?.setEnabled(section !== 'fields');
   corridorContext?.tick(elapsed / 1000);
+  if (corridorContext && section === 'campus' && tour.shot === 'traffic') {
+    ui.play.textContent=corridorContext.playing?'❚❚':'▶';
+    ui.step.disabled=false;ui.step.min=0;ui.step.max=corridorContext.frames.length-1;ui.step.step=1;ui.step.value=corridorContext.frame;
+    ui.rate.disabled=false;ui.rate.value=document.querySelector('#corridor-traffic-rate').value;
+    ui.timeLabel.textContent=document.querySelector('#corridor-traffic-time').textContent;
+  }
   const dt = Math.min(0.05, elapsed / 1000);
   last = now;
   const moving = Boolean(

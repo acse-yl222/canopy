@@ -1,4 +1,5 @@
 // Retain every source mesh and transform; no distance eviction or simplification.
+import {drapeBuildings} from './corridor-terrain.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
@@ -32,6 +33,7 @@ export function createDetailTiles({scene, coarse, indexUrl, onChange = () => {}}
       for (const file of files) jobs.push(async loader => {
         const gltf = await loader.loadAsync(new URL(file, indexUrl).href);
         root.add(gltf.scene);
+        drapeBuildings(gltf.scene);
         // These source buildings never move. Compute their world transforms once.
         group.updateWorldMatrix(true, false);
         root.updateWorldMatrix(true, false);

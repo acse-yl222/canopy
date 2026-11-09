@@ -1,0 +1,55 @@
+{
+  "terrain_source": "https://raw.githubusercontent.com/acse-yl222/physics-grounded-4d-world-model-framework/e45d08934593fd3729f22dc0fd128acc3b519cac/project/imperial_corridor/input/export-v1/data/terrain.json",
+  "terrain_sha256": "8170b780f2ad7f9bada340e804c53acd0f30dbfe43204f98226b4fd41209677b",
+  "grid": {
+    "nx": 821,
+    "ny": 821,
+    "cell_m": 10,
+    "encoding": "Original int16le-base64, 0.01 m quantization"
+  },
+  "terrain_metadata": {
+    "x0": -4100.0,
+    "y0": -4100.0,
+    "dx": 10.0,
+    "nx": 821,
+    "ny": 821,
+    "base_m": -2.7,
+    "scale_m": 0.01,
+    "encoding": "int16le-base64",
+    "source": {
+      "dem_sha256": "ef2297190379759bd5c2506012a27ac24bb37cfafb5f0fe40dde7154395d7c57",
+      "dem_dx_m": 5.0,
+      "name": "AWS Terrain Tiles (Tilezen Joerd) terrarium",
+      "zoom": 15,
+      "imagery_sources": [
+        "uk_lidar"
+      ],
+      "attribution": [
+        "United Kingdom terrain data \u00a9 Environment Agency copyright and/or database right 2015. All rights reserved."
+      ],
+      "license": "https://github.com/tilezen/joerd/blob/master/docs/attribution.md"
+    },
+    "vertical_datum": "Heights as delivered by Terrarium tiles (metres, no datum conversion documented by Tilezen). The UK source is the Environment Agency LIDAR Composite DTM, published in metres above Ordnance Datum Newlyn (ODN)."
+  },
+  "buildings": "Inverse of original exporter flattening: add bilinear terrain height at each original world-space vertex. Original geometry precision, materials and full detail retained. GPU height offsets are disabled in physics views.",
+  "vector_land": "Source vector polygons are differenced against exact source lane/junction footprints where road elevations intersect terrain, then constrained-triangulated and subdivided to <=20 m horizontal edges. Classification and remaining polygon boundaries/holes retained. No raster-derived contours or masks. Original flat surfaces retained separately.",
+  "roads": "All 70,076 original lane shapes/widths and 9,006 junction outlines. Use original XYZ coordinates; bridges include original rule-based deck/ramp estimates. Tunnels have no supplied depth and are not excavated. Flat road mesh retained for comparison.",
+  "vehicles": "Saved XY trajectories, headings and times unchanged. Heights/grades projected to nearest direction-compatible source lane segments, using previous height to disambiguate crossings. Fallback: original road_surface height grid. This is display inference, not recorded vehicle Z. Nonconsecutive seeks reset continuity.",
+  "physics": "No simulation rerun, no field data modified. Terrain displacement disabled in physics views; original flat geometry retained for those fields.",
+  "vegetation_signals": "Original horizontal placements retained; instance bases projected onto terrain.",
+  "limitations": [
+    "Bridge geometry uses source inferred deck elevations, not surveyed heights.",
+    "No tunnel excavation or invented tunnel depths.",
+    "Vehicle elevations at ambiguous stacked crossings are inferred.",
+    "Pedestrian/cycle path overlay follows terrain; independently elevated footbridges are not yet reconstructed."
+  ],
+  "terrain_road_seams": "Neutral display seam meshes connect lower source road edges to adjacent terrain after clipping, to prevent see-through cracks. They are not surveyed retaining walls or curbs.",
+  "validation": {
+    "complete_building_assets": 331,
+    "building_vertex_samples": 67167,
+    "max_restoration_error_m": 3.400492147420664e-06,
+    "source_lanes": 70076,
+    "browser_errors": 0
+  },
+  "display_mode": "3D terrain enabled automatically in scene views; original flat geometry used in physics views"
+}
