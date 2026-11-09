@@ -2787,6 +2787,8 @@ async function boot() {
   await dataReady;
   if (dataError) throw dataError;
   ui.loading.classList.add('hide');
+  try { const saved = JSON.parse(sessionStorage.getItem('canopy-download-timing') || 'null'); if(saved && Date.now()-saved.finished<600000){ const seconds=Math.round((Date.now()-saved.started)/1000);const download=Math.round((saved.finished-saved.started)/1000);const note=document.createElement('div');note.textContent=`Ready in ${Math.floor(seconds/60)}m ${seconds%60}s · Download ${Math.floor(download/60)}m ${download%60}s`;note.style.cssText='position:fixed;bottom:90px;left:24px;padding:10px 14px;background:#142a32dd;color:#e4ebe4;font:12px system-ui;z-index:15;border-radius:6px';document.body.append(note);setTimeout(()=>note.remove(),15000);sessionStorage.removeItem('canopy-download-timing');} } catch {}
+
   // ?pose=campus|overhead jumps straight to that view (no intro); ?step=N picks the time step
   const qs = new URLSearchParams(location.search),
     pose = qs.get('pose') ?? (SCENE.id === 'imperial_corridor_8km' ? 'campus' : null);
