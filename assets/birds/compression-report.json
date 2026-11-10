@@ -1,0 +1,14 @@
+{
+  "bird_replay.f32": {
+    "source_bytes": 144009600,
+    "compressed_bytes": 46598142,
+    "sha256": "9a13d8e22ebd83e3d2a16ddcc3e1dee61651927c68e3274382aa61cc34c6eb89",
+    "decoded_identical": true
+  },
+  "bird_states.u8": {
+    "source_bytes": 6000400,
+    "compressed_bytes": 16709,
+    "sha256": "6ce42a0615ab5c2432a1acee8c28dad4297c65c1f07be04b950a0cc3198fa01f",
+    "decoded_identical": true
+  }
+}

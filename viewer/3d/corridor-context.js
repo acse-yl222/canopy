@@ -3,6 +3,7 @@ import {currentTerrain, elevateInstances, createElevatedRoads} from './corridor-
 import * as THREE from 'three';
 import {createCorridorVehicles} from './corridor-vehicles.js';
 import {createCorridorSignals} from './corridor-signals.js';
+import {createGroundFurniture} from './ground-furniture.js';
 import {createVectorLandscape} from './vector-landscape.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 export async function createCorridorContext({scene, config, url, onChange}) {
@@ -22,6 +23,9 @@ export async function createCorridorContext({scene, config, url, onChange}) {
   const switches=document.createElement('div');switches.innerHTML='<p><label><input id="vector-surface-visible" type="checkbox" checked> Vector land / water / paths</label></p><p><label><input id="vector-vegetation-visible" type="checkbox" checked> Mapped trees / hedges</label></p><p id="vector-landscape-counts">'+landscape.meta.trees+' mapped trees · '+landscape.meta.hedges+' hedges · '+landscape.meta.areas+' areas · '+landscape.meta.water+' waters · '+landscape.meta.paths+' paths</p><p>Tree species/heights and hedge dimensions are inferred from original display rules. Source coverage: 8 km; outer 96 m rim unclassified.</p>';panel.querySelector('#corridor-ground-key').after(switches);
   switches.onchange=()=>{syncGround();onChange()};
   const terrain=currentTerrain(),elevatedRoads=createElevatedRoads();group.add(elevatedRoads);
+  const furniture=createGroundFurniture(landscape.sourcePlacements,terrain);group.add(furniture);
+  const detailControls=document.createElement('div');detailControls.innerHTML=`<p><label><input id="ground-furniture-visible" type="checkbox" checked> Source street furniture</label></p><p>${furniture.userData.total.toLocaleString('en')} source placements · benches, cycle stands, lamps and other fixtures. Generic inferred shapes/sizes; shown within 480 m. Position accuracy not independently verified.</p><p>Illustrative ground materials · no image textures.</p>`;
+  switches.after(detailControls);detailControls.onchange=()=>{syncGround();onChange()};
   let terrainMode=null;
   const roads=roadAsset?.scene ?? null, boundaries=elevatedRoads.children.filter(o=>o.name==='lane_boundaries');
   if(roads){roads.name='vector_road_network';group.add(roads);roads.traverse(o=>{if(o.isMesh&&o.name==='lane_boundaries'){boundaries.push(o);o.visible=false}});
@@ -32,7 +36,7 @@ export async function createCorridorContext({scene, config, url, onChange}) {
   const groundToggle=document.querySelector('#l-ground'),treesToggle=document.querySelector('#l-trees'),roadsToggle=panel.querySelector('#corridor-roads-visible'),surfaceToggle=panel.querySelector('#vector-surface-visible'),vegetationToggle=panel.querySelector('#vector-vegetation-visible');
   function syncGround(){const mode=terrain.enabled;
     if(terrainMode!==mode){terrainMode=mode;ground.children.forEach(m=>{m.geometry=mode?m.userData.terrainGeometry:m.userData.flatGeometry});elevateInstances(landscape.vegetation,mode);elevateInstances(signals,mode);onChange();}
-    const visible=groundToggle.checked,roadVisible=visible&&(roadsToggle?.checked??true),landVisible=visible&&surfaceToggle.checked,vegVisible=treesToggle.checked&&vegetationToggle.checked;if(ground.visible!==landVisible||roads&&roads.visible!==roadVisible||landscape.vegetation.visible!==vegVisible)onChange();ground.visible=landVisible;if(roads)roads.visible=roadVisible&&!mode;elevatedRoads.visible=roadVisible&&mode;landscape.vegetation.visible=vegVisible;}
+    const visible=groundToggle.checked,roadVisible=visible&&(roadsToggle?.checked??true),landVisible=visible&&surfaceToggle.checked,vegVisible=treesToggle.checked&&vegetationToggle.checked;if(ground.visible!==landVisible||roads&&roads.visible!==roadVisible||landscape.vegetation.visible!==vegVisible)onChange();ground.visible=landVisible;if(roads)roads.visible=roadVisible&&!mode;elevatedRoads.visible=roadVisible&&mode;landscape.vegetation.visible=vegVisible;const furnitureVisible=mode&&visible&&detailControls.querySelector('input').checked;if(furniture.visible!==furnitureVisible)onChange();furniture.visible=furnitureVisible;}
   syncGround();
   const [meta,response]=await Promise.all([fetch(url(config.traffic_meta)).then(r=>{if(!r.ok)throw Error('Traffic metadata unavailable');return r.json()}),fetch(url(config.traffic_binary))]);
   if(!response.ok)throw Error('Traffic frames unavailable');
@@ -51,7 +55,7 @@ export async function createCorridorContext({scene, config, url, onChange}) {
   button.onclick=()=>setPlaying(!playing);
   slider.oninput=()=>{elapsed=Number(slider.value)*meta.dt;show(Number(slider.value));};
   panel.querySelector('#corridor-traffic-visible').onchange=e=>{cars.visible=e.target.checked;onChange()};show(0);
-  return {group,ground,roads,elevatedRoads,terrain,signals,vegetation:landscape.vegetation,landscapeMeta:landscape.meta,cars,meta,frames,get frame(){return frame},get playing(){return playing},show,setPlaying,
+  return {group,ground,roads,elevatedRoads,terrain,signals,furniture,vegetation:landscape.vegetation,landscapeMeta:landscape.meta,cars,meta,frames,get frame(){return frame},get playing(){return playing},show,setPlaying,
     tick(dt){syncGround();if(lastElevationMode!==terrain.enabled)show(frame);if(playing){elapsed=Math.min(elapsed+dt*Number(rate.value),(frames.length-1)*meta.dt);show(Math.floor(elapsed/meta.dt));if(frame===frames.length-1){playing=false;button.textContent='Play traffic'}}},
   };
 }

@@ -1,0 +1,83 @@
+{
+  "method": "Exact vector difference: existing unclassified terrain polygon minus union of all existing classified vector surfaces. No contour inference, simplification or raster image.",
+  "source_area_m2": 61207230.590716675,
+  "exposed_area_m2": 42120739.578067586,
+  "overlap_remaining_m2": 0.0,
+  "triangles": 514400,
+  "sources": [
+    {
+      "file": "00-wetland.f32.gz",
+      "sha256": "814e7ee4611322991ced686098d2f0aa4f9af484ea3f1c18546729f90c941e58"
+    },
+    {
+      "file": "01-track.f32.gz",
+      "sha256": "c95542762df28f97a64ba2f3807722a557d6bcc6ee54f831347a891304cfc195"
+    },
+    {
+      "file": "02-sand.f32.gz",
+      "sha256": "84826adf5aef045f070d4047540eaf0e3b1a3703c3b16a48b2d592e5e89cf4d1"
+    },
+    {
+      "file": "03-railway.f32.gz",
+      "sha256": "57c99793b43f174df6ba01608f3bc2aadd82a8674c4c06b7c5ba43bf9fc0ef6e"
+    },
+    {
+      "file": "04-plaza.f32.gz",
+      "sha256": "af196fb99ee6cc5bce4436ee89a1c3ea32f6760eb04fdf3fa5e9beb6555e3df1"
+    },
+    {
+      "file": "05-playground.f32.gz",
+      "sha256": "f9c90d92f252073bd66f16c871d05f54c1b0ee8d0bd266dca279cfc6942f63b9"
+    },
+    {
+      "file": "06-pitch.f32.gz",
+      "sha256": "019de18dca3a07e064554c87dbcff852ee510bc221ce526257bcc7c17574c383"
+    },
+    {
+      "file": "07-grave_yard.f32.gz",
+      "sha256": "7c554599c4933a76cc67ad171575963cec88ad8917e34d71076c0efae34fef67"
+    },
+    {
+      "file": "08-cemetery.f32.gz",
+      "sha256": "f66e6eaf2c0f6df7217eea4b07aa470bad6ec7b32ad357c2907da535dfa9b20c"
+    },
+    {
+      "file": "09-bare.f32.gz",
+      "sha256": "0210b1b7fede489a868953624c08c3e640328a13d7c0f40836dad46e2a9804f7"
+    },
+    {
+      "file": "10-allotments.f32.gz",
+      "sha256": "7f1a8c0954a043b871a56271727b28f858616b26c98912cdc1dd762c20c16c11"
+    },
+    {
+      "file": "11-grass.f32.gz",
+      "sha256": "dee438103d9cd27326bfc1227b9393d1a6ea489f7291c77a19f0168c179a66f8"
+    },
+    {
+      "file": "12-scrub.f32.gz",
+      "sha256": "ee6644c8844de50633874f0a82ff7f355474638b43ad21c8fdb87956b1c261f1"
+    },
+    {
+      "file": "13-wood.f32.gz",
+      "sha256": "7f27c0e628daf7ce2b568bdff9d797b1570d0cf31e7318e9fee9d863b4bb2a34"
+    },
+    {
+      "file": "14-park.f32.gz",
+      "sha256": "77bb4d68d63fb300522a40ff5ab6adc3770643e30d3ae7c0bbfb30ea86bdeafa"
+    },
+    {
+      "file": "15-water.f32.gz",
+      "sha256": "9e57d728884c5ff5f45c228f7bc9c414c4228f5e9afedc6b51db98b596a2eb20"
+    },
+    {
+      "file": "16-walk-cycle-paths.f32.gz",
+      "sha256": "c180856c078c34fa666b6dba5f13b8059686169873c2796a1fed8cefe579246c"
+    },
+    {
+      "file": "17-unclassified-base.f32.gz",
+      "sha256": "10e35cd514e7259b7a73626aa87ad269361c653b7c4416c4813ab54ed974cb1a"
+    }
+  ],
+  "output": "unclassified-base-exposed.f32.gz",
+  "output_sha256": "6ad7ed6e508abffdefa89c646c4010bdc251e64d558ee139164fc555b8a0e56a"
+}

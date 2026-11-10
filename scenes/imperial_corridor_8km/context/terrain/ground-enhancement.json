@@ -1,0 +1,201 @@
+{
+  "source": "../vector_landscape/source/scene-meta.json",
+  "source_sha256": "710aebe8a1d304f5871d54e8dd81f73a7086be0cddd839ab340c2a4aeec5c0b7",
+  "source_furniture": {
+    "counts": {
+      "bench": 2975,
+      "bicycle_stand": 4251,
+      "bollard": 719,
+      "waste_basket": 1157,
+      "post_box": 819,
+      "street_lamp": 29514,
+      "bus_stop": 1261,
+      "cycle_hire_dock": 278
+    },
+    "total": 40974,
+    "source": "scene-meta.json placements (original positions and yaw)",
+    "dimensions": "Generic inferred display sizes; source placement accuracy is not independently verified",
+    "distance_m": 480
+  },
+  "ground_materials": "Analytic shader variation only; not measured surface conditions. No ground image maps. Existing vector boundaries and holes retained.",
+  "geometry_fix": "unclassified-base-exposed.f32.gz removes overlap below existing classified surfaces; see exposed-ground-provenance.json",
+  "limitations": [
+    "Fixture positions are reused from upstream records, not independently surveyed.",
+    "Fixture shapes and dimensions are generic inferred display models.",
+    "No new sidewalks, curbs, road markings, trees or land-cover polygons are inferred.",
+    "Boundary walls, fences and retaining walls remain unrendered in this enhancement."
+  ],
+  "validation": {
+    "audit": {
+      "counts": {
+        "counts": {
+          "bench": 2975,
+          "bicycle_stand": 4251,
+          "bollard": 719,
+          "waste_basket": 1157,
+          "post_box": 819,
+          "street_lamp": 29514,
+          "bus_stop": 1261,
+          "cycle_hire_dock": 278
+        },
+        "total": 40974,
+        "source": "scene-meta.json placements (original positions and yaw)",
+        "dimensions": "Generic inferred display sizes; source placement accuracy is not independently verified",
+        "distance_m": 480
+      },
+      "alignmentSamples": 1271,
+      "maxError": 2.625918442333841e-05,
+      "drawCalls": 416,
+      "triangles": 22878565,
+      "landMaterials": [
+        {
+          "name": "wetland",
+          "details": {
+            "kind": "wetland",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "track",
+          "details": {
+            "kind": "track",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "sand",
+          "details": {
+            "kind": "sand",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "railway",
+          "details": {
+            "kind": "railway",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "plaza",
+          "details": {
+            "kind": "plaza",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "playground",
+          "details": {
+            "kind": "playground",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "pitch",
+          "details": {
+            "kind": "pitch",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "grave_yard",
+          "details": {
+            "kind": "grave_yard",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "cemetery",
+          "details": {
+            "kind": "cemetery",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "bare",
+          "details": {
+            "kind": "bare",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "scrub",
+          "details": {
+            "kind": "scrub",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "grass",
+          "details": {
+            "kind": "grass",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "allotments",
+          "details": {
+            "kind": "allotments",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "wood",
+          "details": {
+            "kind": "wood",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "water",
+          "details": {
+            "kind": "water",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "park",
+          "details": {
+            "kind": "park",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "unclassified-base",
+          "details": {
+            "kind": "unclassified-base",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        },
+        {
+          "name": "walk-cycle-paths",
+          "details": {
+            "kind": "walk-cycle-paths",
+            "method": "Analytic colour/roughness variation, no raster assets; not measured surface condition"
+          },
+          "texture": false
+        }
+      ]
+    },
+    "hidden": true,
+    "restored": true,
+    "errors": []
+  }
+}

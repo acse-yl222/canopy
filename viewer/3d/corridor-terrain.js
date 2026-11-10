@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {enhanceGroundMaterial} from './ground-materials.js';
 let terrain=null;
 const enabled={value:1};
 const patched=new WeakSet();
@@ -70,7 +71,7 @@ export function createElevatedRoads(){const root=new THREE.Group(),positions=[],
    for(const [u,v] of [[a,c],[b,d]]){const hu=terrain.dem.sample(u[0],u[1]),hv=terrain.dem.sample(v[0],v[1]);if(hu>u[2]+.1||hv>v[2]+.1){const up=[u[0],u[1],Math.max(hu,u[2])],vp=[v[0],v[1],Math.max(hv,v[2])];for(const q of [u,v,vp,u,vp,up])vertex(seamP,seamH,...q)}}}
  }
  for(const junction of terrain.network.junctions){const shape=junction.shape;if(shape.length<3)continue;const points=shape.map(p=>new THREE.Vector2(p[0],p[1]));for(const triangle of THREE.ShapeUtils.triangulateShape(points,[]))for(const i of triangle)vertex(junctionP,junctionH,...shape[i])}
- function mesh(p,h,offset){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('canopyHeight',new THREE.Float32BufferAttribute(h,1));terrainNormals(g);const m=new THREE.MeshStandardMaterial({color:'#646c70',roughness:1,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:offset,polygonOffsetUnits:offset});patch(m);const mesh=new THREE.Mesh(g,m);mesh.frustumCulled=false;root.add(mesh)}
+ function mesh(p,h,offset){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('canopyHeight',new THREE.Float32BufferAttribute(h,1));terrainNormals(g);const m=new THREE.MeshStandardMaterial({color:'#646c70',roughness:1,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:offset,polygonOffsetUnits:offset});patch(m);enhanceGroundMaterial(m,'asphalt');const mesh=new THREE.Mesh(g,m);mesh.frustumCulled=false;root.add(mesh)}
  mesh(positions,heights,-2);mesh(junctionP,junctionH,-3);if(seamP.length){mesh(seamP,seamH,-1);const seam=root.children[root.children.length-1];seam.name='Terrain-to-road display seams';seam.material.color.set('#969183');}
  const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lineP,3));lg.setAttribute('canopyHeight',new THREE.Float32BufferAttribute(lineH,1));const lm=new THREE.LineBasicMaterial({color:'#c9c9b6',depthWrite:false});patch(lm);const lines=new THREE.LineSegments(lg,lm);lines.position.y=.035;lines.name='lane_boundaries';lines.visible=false;lines.frustumCulled=false;root.add(lines);root.name='Source XYZ lane surfaces and junctions';root.userData={lanes:terrain.network.lanes.length,junctions:terrain.network.junctions.length};return root;
 }

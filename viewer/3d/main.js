@@ -220,7 +220,7 @@ function setupSceneUI() {
       ]
     : [
         ['overview', 'Overview'],
-        ...(SCENE.id === 'imperial_corridor_8km' ? [['whiteCity', 'White City campus'], ['traffic', 'Traffic']] : []),
+        ...(SCENE.id === 'imperial_corridor_8km' ? [['whiteCity', 'White City campus'], ['traffic', 'Traffic'], ['birds', 'Birds']] : []),
         ...(HAS_UAV_LAYER ? [['uavs', 'UAVs']] : []),
         ...(SCENE.traffic ? [['trafficMap', 'Traffic map']] : []),
       ]; // the close-up traffic and transport orbits stay reachable by ?shot=traffic|transport
@@ -1420,6 +1420,7 @@ function setRateOptions(kind, value) {
   ui.rate.value = String(value);
 }
 ui.play.addEventListener('click', () => {
+  if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){window.canopyBirds.toggle();return;}
   if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {corridorContext.setPlaying(!corridorContext.playing);return;}
   if (section === 'campus' && replayLayer) {
     replayLayer.playing = !replayLayer.playing;
@@ -1432,6 +1433,7 @@ ui.play.addEventListener('click', () => {
   } else setPlaying(!state.playing);
 });
 ui.rate.addEventListener('change', () => {
+  if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){window.canopyBirds.setRate(ui.rate.value);return;}
   if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {document.querySelector('#corridor-traffic-rate').value=ui.rate.value;return;}
   if (section === 'fields' && seqMode()) fieldRateOverrides[state.phase] = +ui.rate.value;
   if (section === 'campus' && uavLayer && tour.shot === 'uavs') {
@@ -1443,6 +1445,7 @@ ui.rate.addEventListener('change', () => {
   else if (state.playing) setPlaying(true);
 });
 ui.step.addEventListener('input', () => {
+  if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){window.canopyBirds.seek(ui.step.value);return;}
   if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {const slider=document.querySelector('#corridor-traffic-step');slider.value=ui.step.value;slider.dispatchEvent(new Event('input'));return;}
   if (section === 'campus' && uavLayer && tour.shot === 'uavs') {
     uavLayer.update(+ui.step.value);
@@ -1903,6 +1906,7 @@ function startTour(shot = 'overview') {
   setSectionUI();
 }
 function updateTour(now, dt) {
+  if(SCENE.id==='imperial_corridor_8km'&&tour.shot==='birds')return;
   if (!tour.active || flight) return;
   if (!tour.paused && !TOUR_SHOTS[tour.shot].fixed)
     tour.az += dt * (tour.shot === 'overview' ? 0.09 : 0.05);
@@ -1947,7 +1951,17 @@ function setSectionUI() {
 }
 /** Site section: ground, trees and (South Kensington) the traffic / UAV replay visible; the physics fields hidden; the shot tour runs. */
 let savedLandscapeDisplay={ground:true,trees:true};
+let canopyBirdsLoading=null;
+async function showCanopyBirds(){
+  if(!canopyBirdsLoading)canopyBirdsLoading=import('./canopy-birds-preview.js').then(m=>m.installBirdPreview(window.viewer,invalidate));
+  const birds=await canopyBirdsLoading;
+  const selected=section==='campus'&&tour.shot==='birds';
+  birds?.setActive(selected);
+  if(selected&&birds){birds.focus();ui.step.min=0;ui.step.max=birds.manifest.last_frame_t_s;ui.step.step=1.5;ui.step.disabled=false;ui.rate.replaceChildren(...[1,10,30,60].map(v=>new Option(v+'×',v)));ui.rate.value=birds.rate;ui.rate.disabled=false;}
+}
+
 function runCampus(shot = 'overview') {
+  window.canopyBirds?.setActive(shot==='birds');
   section = 'campus';
   placeSun();
   setPlaying(false);
@@ -1995,6 +2009,11 @@ function runCampus(shot = 'overview') {
     const toggle=document.querySelector('#corridor-traffic-visible');
     if(toggle){toggle.checked=true;toggle.dispatchEvent(new Event('change'));}
     window.corridorContext?.setPlaying(true);
+  }
+  if(SCENE.id==='imperial_corridor_8km'&&shot==='birds'){
+    tour.active=true;tour.shot='birds';tour.paused=true;tour.dur=Infinity;flight=null;controls.enabled=true;ui.auto.checked=false;
+    ui.stage.textContent='CANOPY · Bird simulation';ui.info.textContent='Recorded flock behaviour on CANOPY terrain';ui.stats.textContent='';ui.timeLabel.textContent='Loading bird replay…';
+    showCanopyBirds().catch(console.error);setSectionUI();return;
   }
   if (replayLayer) replayLayer.startShot(shot);
   else startTour(TOUR_SHOTS[shot] ? shot : 'overview');
@@ -2119,6 +2138,7 @@ function setupTransportUI() {
 }
 /** Fields section: climb to the overhead view, hide ground / trees / replay, play the fields in sequence. */
 function runFields(phase = PHASE_ORDER[0]) {
+  window.canopyBirds?.setActive(false);
   if (section === 'fields' && state.introDone) {
     ui.mode.value = 'seq';
     setPhase(phase);
@@ -2305,6 +2325,8 @@ function animate(now) {
   const elapsed = Math.max(0, now - last);
   currentTerrain()?.setEnabled(section !== 'fields');
   corridorContext?.tick(elapsed / 1000);
+  if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){const b=window.canopyBirds;ui.play.textContent=b.playing?'❚❚':'▶';ui.step.value=b.time;ui.rate.value=b.rate;ui.timeLabel.textContent=`Birds · ${b.time.toFixed(1)} / ${b.manifest.last_frame_t_s.toFixed(0)} s`;}
+
   if (corridorContext && section === 'campus' && tour.shot === 'traffic') {
     ui.play.textContent=corridorContext.playing?'❚❚':'▶';
     ui.step.disabled=false;ui.step.min=0;ui.step.max=corridorContext.frames.length-1;ui.step.step=1;ui.step.value=corridorContext.frame;
@@ -2976,6 +2998,9 @@ document.addEventListener('visibilitychange', () => {
   invalidate();
 });
 await boot();
+if (SCENE.id === 'imperial_corridor_8km' && (qs0.get('birds') === '1' || qs0.get('shot') === 'birds')) {
+  runCampus('birds');
+}
 if (SCENE.city_tools) {
   const { installCityTools } = await import('./city-tools.js');
   await installCityTools({
