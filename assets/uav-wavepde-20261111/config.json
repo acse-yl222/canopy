@@ -1,0 +1,6 @@
+{
+  "mode": "wavepde",
+  "routes": "routes.json",
+  "evidence": "evidence.json",
+  "default_route": "S039-S049"
+}

@@ -1422,7 +1422,7 @@ function setRateOptions(kind, value) {
 ui.play.addEventListener('click', () => {
   if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){window.canopyBirds.toggle();return;}
   if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {corridorContext.setPlaying(!corridorContext.playing);return;}
-  if(section==='campus'&&tour.shot==='uavs'&&uavLayer?.uavMode==='wind_astar'){uavLayer.playing=!uavLayer.playing;return;}
+  if(section==='campus'&&tour.shot==='uavs'&&uavLayer?.flightSelection){uavLayer.playing=!uavLayer.playing;return;}
   if (section === 'campus' && replayLayer) {
     replayLayer.playing = !replayLayer.playing;
     ui.play.textContent = replayLayer.playing ? '❚❚' : '▶';
@@ -1786,7 +1786,7 @@ const TOUR_SHOTS = {
   },
   uavs: {
     fixed: () => {
-      if(uavLayer?.uavMode==='wind_astar')return uavLayer.viewPose;
+      if(uavLayer?.flightSelection)return uavLayer.viewPose;
       const d = fitDistance();
       const target = domainCentre.clone();
       return { pos: target.clone().add(new THREE.Vector3(0, d * 0.866, d * 0.5)), target };
@@ -1865,7 +1865,7 @@ function startTour(shot = 'overview') {
   tour.paused = false;
   tour.shot = shot;
   tour.t0 = performance.now();
-  tour.dur = shot==='uavs'&&uavLayer?.uavMode==='wind_astar' ? Infinity : TOUR_SHOTS[shot].dur;
+  tour.dur = shot==='uavs'&&uavLayer?.flightSelection ? Infinity : TOUR_SHOTS[shot].dur;
   if (first) tour.az = THREE.MathUtils.degToRad(-150);
   ui.stage.textContent = TOUR_SHOTS[shot].label();
   ui.info.textContent =
@@ -1887,11 +1887,11 @@ function startTour(shot = 'overview') {
   const p = tourPose(tour.az);
   if (camera.position.distanceTo(p.pos) > 50) {
     flyTo(p, 2600, () => {
-      controls.enabled = shot==='uavs'&&uavLayer?.uavMode==='wind_astar';
+      controls.enabled = shot==='uavs'&&uavLayer?.flightSelection;
       tour.t0 = performance.now();
     });
   } else {
-    controls.enabled = shot==='uavs'&&uavLayer?.uavMode==='wind_astar';
+    controls.enabled = shot==='uavs'&&uavLayer?.flightSelection;
     flight = null;
   }
   if (shot === 'uavs' && uavLayer) {
@@ -1908,7 +1908,7 @@ function startTour(shot = 'overview') {
   setSectionUI();
 }
 function updateTour(now, dt) {
-  if(SCENE.id==='imperial_corridor_8km'&&(tour.shot==='birds'||tour.shot==='uavs'&&uavLayer?.uavMode==='wind_astar'))return;
+  if(SCENE.id==='imperial_corridor_8km'&&(tour.shot==='birds'||tour.shot==='uavs'&&uavLayer?.flightSelection))return;
   if (!tour.active || flight) return;
   if (!tour.paused && !TOUR_SHOTS[tour.shot].fixed)
     tour.az += dt * (tour.shot === 'overview' ? 0.09 : 0.05);
@@ -2383,8 +2383,8 @@ function animate(now) {
     }
   }
   if (uavLayer) {
-    uavLayer.setVisible(section !== 'fields' && !window.cityTools?.current && (uavLayer.uavMode!=='wind_astar'||tour.shot==='uavs'));
-    if (uavLayer.group.visible) { uavLayer.tick(elapsed / 1000); if(uavLayer.uavMode==='wind_astar'){invalidate();ui.step.value=uavLayer.t;ui.step.max=uavLayer.duration;ui.timeLabel.textContent=`Flight ${uavLayer.t.toFixed(1)} / ${uavLayer.duration.toFixed(1)} s`;ui.stats.textContent=uavLayer.stats;ui.play.textContent=uavLayer.playing?'❚❚':'▶';} }
+    uavLayer.setVisible(section !== 'fields' && !window.cityTools?.current && (!uavLayer.flightSelection||tour.shot==='uavs'));
+    if (uavLayer.group.visible) { uavLayer.tick(elapsed / 1000); if(uavLayer.flightSelection){invalidate();ui.step.value=uavLayer.t;ui.step.max=uavLayer.duration;ui.timeLabel.textContent=`Flight ${uavLayer.t.toFixed(1)} / ${uavLayer.duration.toFixed(1)} s`;ui.stats.textContent=uavLayer.stats;ui.play.textContent=uavLayer.playing?'❚❚':'▶';} }
   }
   updateFlight(now);
   if (controls.enabled) controls.update();
@@ -2806,7 +2806,7 @@ async function boot() {
       sceneId: SCENE.id,
       configURL: SCENE.uav?.config ? SCENE.url(SCENE.uav.config) : undefined,
     });
-    if(uavLayer.uavMode==='wind_astar'&&!LITE)uavLayer.geometryReady=()=>detailTiles?.hasPoints(uavLayer.selectedRoute.points_enu_m.map(p=>[p[0],p[2],-p[1]]))??false;
+    if(uavLayer.flightSelection&&!LITE)uavLayer.geometryReady=()=>detailTiles?.hasPoints(uavLayer.selectedRoute.points_enu_m.map(p=>[p[0],p[2],-p[1]]))??false;
     const query = new URLSearchParams(location.search);
     if (query.has('t')) uavLayer.update(+query.get('t'));
     applyReplayLayers();

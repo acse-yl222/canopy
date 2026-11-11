@@ -1,0 +1,103 @@
+{
+  "run_id": "uav_wavepde_20261111",
+  "summary": {
+    "stations": 100,
+    "requested_routes": 336,
+    "validated_routes": 336,
+    "failed_routes": 0,
+    "building_detour_routes": 280,
+    "lateral_avoidance_examples": 34,
+    "max_agl_m": 36.79529947509766,
+    "ceiling_agl_m": 40,
+    "solver_statuses": {
+      "reached": 336
+    },
+    "strongly_connected": true,
+    "robust_recovery_used": false
+  },
+  "algorithm": "Original WavePDE convected wave solve + characteristic tracing",
+  "provenance": {
+    "solver": "wavepde.torch_backend.solver.solve + wavepde.torch_backend.tracing.trace_paths",
+    "robust": false,
+    "wave": {
+      "c0": 15,
+      "cz_up": 6,
+      "cz_down": 4,
+      "wind": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dt": 0.2,
+      "n_steps": 1400,
+      "pulse_t0_steps": 60,
+      "pulse_tau_steps": 8,
+      "source_sigma_cells": 1.0,
+      "sponge_layers": 4,
+      "sponge_strength": 0.3,
+      "min_peak_amp": 1e-08,
+      "diffusivity_m2_s": 0.0,
+      "reg_z_low": 30.0,
+      "reg_z_full": 40.0,
+      "reg_low_factor": 1
+    },
+    "spacing_m": [
+      8.0,
+      8.0,
+      4.0
+    ],
+    "grid": [
+      256,
+      256,
+      32
+    ],
+    "waveform": "gaussian_long",
+    "wind": {
+      "sha256": "46f15e1a88094488bee20b2a65c37487e85e53cd9d4f074fde57f0c0cc03b27c",
+      "frame": "ENU",
+      "frozen_time_s": 7500,
+      "terrain_adapter": "Original flat-geometry wind sampled at local AGL; not recomputed on restored terrain"
+    },
+    "solver_revision": "6ccaa83444ef05bf375d30e0c3b2732f200e049b",
+    "solver_files": {
+      "src/wavepde/torch_backend/planner.py": "b9117ff7dd1ca59463fda32aa734cf7d2a1f8ecdb2fc501f584dbb5880ac5eff",
+      "src/wavepde/torch_backend/solver.py": "41c6fbb46c10fc542f63fd13395aed4676f6b3d984dd6091d32c7bbe96c5e75b",
+      "src/wavepde/torch_backend/material_solver.py": "bfbea066134d84f3b516866284df6376d84e87bb24880cadd65221713111d6d9",
+      "src/wavepde/torch_backend/__main__.py": "831b6150381ae4e7a26b0d7a487d3770461d88b3c0c6d9be2b67ab413520dbd3",
+      "src/wavepde/torch_backend/robust_tracing.py": "c2b3487568d8c3332700c2b20b241f6617891eb8c8ba0829849214f1e099d5d4",
+      "src/wavepde/torch_backend/geometry.py": "20eba6308a427e933e75fea8889c506201cc8fe714498da66f19fd680fd58b91",
+      "src/wavepde/torch_backend/tracing.py": "a0a72750a1d4a8fcfe512b104c22c8973aff7d6865036162b288d96dac5281ad",
+      "src/wavepde/torch_backend/fields.py": "9b395a38f60df7a05ae7fa8fdca7ea59394094cd3130e9638e6357a91f42d4b0",
+      "src/wavepde/torch_backend/__init__.py": "06f5edaffb5d8c7a198f8fb05a18dfe799a3002986179a2847a594337077b24e",
+      "src/wavepde/torch_backend/config.py": "cab3cd5dc27d23db7b17509e3f794b117805d0cc6aceb13ec83b5345929b7a02",
+      "src/wavepde/torch_backend/convfem.py": "fd2cbab053499d0bcae3f33dd7befc47cd5c02af5db2426d879cae75a5996ab1"
+    },
+    "runner_sha256": "4dec1fc876f7532d65373083187705ab7b7718abff390c56b224479487c9f3ea",
+    "input_sha256": "19d6e47c812a6cc81aac09d583d1ff40037fea4a8277c7a1631992471a23ef8d",
+    "versions": {
+      "torch": "2.14.0+cu130",
+      "numpy": "2.5.3"
+    },
+    "trace_options": {
+      "smoothing_m": 8,
+      "step_m": 4,
+      "terminal_m": 24,
+      "max_steps": 4000,
+      "extension": "local",
+      "boundary_projection": true,
+      "max_step_halvings": 2,
+      "integrator": "euler"
+    }
+  },
+  "limitations": [
+    "Original WavePDE solve and plain characteristic tracing; no A* paths or graph-search fallback. All 336 requested neighbour routes reached their endpoints.",
+    "Each source uses a 2048 x 2048 m local crop with 8 x 8 x 4 m voxels. This is not a full-domain global-optimality or all-9900-pairs result.",
+    "PDE first-peak arrival time is retained separately. Playback time integrates the recorded path using the solver airspeed ellipsoid and frozen wind; it is not a measured flight time.",
+    "Frozen 3-D model wind at 7500 s is transferred by local height above terrain from the original flat geometry; it was not recomputed or validated by CFD on the restored terrain.",
+    "100 synthetic ground stations with 12 m takeoff and landing gates. Flight ceiling 40 m AGL; no real landing-site survey or vehicle-dynamics validation.",
+    "Collision checks use conservative 4 m horizontal / 3 m vertical planning padding and 0.5 m path sampling against 2 m terrain/building/tree columns. Columns cannot represent underpasses, wires or moving obstacles.",
+    "Building examples mean the straight reference at the same gates intersects building columns. A validated path can avoid a building laterally or vertically within the ceiling."
+  ],
+  "route_export_sha256": "a8ea773d1c8fa80d4ac9987f647a94d15271a61e33c3934fd85c5f5d9725ba10",
+  "validation": "336 original WavePDE traces reached; original closed-voxel segment checks passed; rounded browser paths independently rechecked every 0.5 m against 2 m terrain/building/tree columns. All 100 stations form a strongly connected directed neighbour graph."
+}

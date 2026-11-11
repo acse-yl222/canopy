@@ -12,7 +12,7 @@ export function sampleRoute(route, seconds) {
   return {position:p,wind:w,heading:Math.atan2(b[0]-a[0],b[2]-a[2]),time:t};
 }
 export function validateReplay(data) {
-  if(data.schema_version!=='canopy-wind-astar-demo-1')throw Error('Unsupported UAV replay version');
+  if(!['canopy-wind-astar-demo-1','canopy-wavepde-demo-1'].includes(data.schema_version))throw Error('Unsupported UAV replay version');
   const ids=new Set(data.stations.map(s=>s.id));
   if(ids.size!==100||data.stations.length!==100)throw Error('Expected 100 unique stations');
   const routeIds=new Set();
@@ -23,6 +23,7 @@ export function validateReplay(data) {
     if(!r.points_enu_m.flat().every(Number.isFinite)||!r.wind_enu_mps.flat().every(Number.isFinite)||!r.times_s.every(Number.isFinite))throw Error('Non-finite route data');
     if(r.times_s.some((v,i)=>i>0&&v<=r.times_s[i-1]))throw Error('Non-increasing flight time');
   }
+  if(data.schema_version==='canopy-wavepde-demo-1'&&data.routes.some(r=>r.solver_status!=='reached'||!r.closed_voxel_clear))throw Error('WavePDE solver evidence missing');
   if(!data.routes.length)throw Error('No validated routes');
   return data;
 }

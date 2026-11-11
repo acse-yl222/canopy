@@ -11,7 +11,7 @@ export async function createUavLayer({ scene, sceneId, configURL: selectedConfig
   const response = await fetch(configURL);
   if (!response.ok) throw Error(`UAV configuration: ${response.status}`);
   const config = await response.json();
-  if(config.mode === 'wind_astar') { const {createWindUavLayer} = await import('./wind-uav-layer.js'); return createWindUavLayer({scene,camera,controls,config,configURL}); }
+  if(['wind_astar','wavepde'].includes(config.mode)) { const {createWindUavLayer} = await import('./wind-uav-layer.js'); return createWindUavLayer({scene,camera,controls,config,configURL}); }
   const flightData = await loadRandomUav(new URL(config.routes, configURL), { count: config.uav_count, seed: config.seed, routeLimit: config.route_limit });
   const group = new THREE.Group(); group.name = `${sceneId} Wave PDE flights`;
   const actors = await createActorLayer({ scene: group, carCapacity: 1, uavCapacity: flightData.model.count,
