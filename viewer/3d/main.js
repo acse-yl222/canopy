@@ -1954,6 +1954,7 @@ function setSectionUI() {
 /** Site section: ground, trees and (South Kensington) the traffic / UAV replay visible; the physics fields hidden; the shot tour runs. */
 let savedLandscapeDisplay={ground:true,trees:true};
 let canopyBirdsLoading=null;
+let fieldPreparation=null, fieldInitializationError=null, viewIntent=0;
 async function showCanopyBirds(){
   if(!canopyBirdsLoading)canopyBirdsLoading=import('./canopy-birds-preview.js').then(m=>m.installBirdPreview(window.viewer,invalidate));
   const birds=await canopyBirdsLoading;
@@ -1963,6 +1964,7 @@ async function showCanopyBirds(){
 }
 
 function runCampus(shot = 'overview') {
+  viewIntent++;
   window.canopyBirds?.setActive(shot==='birds');
   section = 'campus';
   placeSun();
@@ -2139,7 +2141,11 @@ function setupTransportUI() {
   applyTransportLayers();
 }
 /** Fields section: climb to the overhead view, hide ground / trees / replay, play the fields in sequence. */
-function runFields(phase = PHASE_ORDER[0]) {
+async function runFields(phase = PHASE_ORDER[0]) {
+  const intent=++viewIntent;
+  if(fieldPreparation){ui.stage.textContent='Loading physics field masks…';await fieldPreparation;}
+  if(intent!==viewIntent)return;
+  if(fieldInitializationError){ui.stage.textContent='Physics fields unavailable: '+fieldInitializationError.message;return;}
   window.canopyBirds?.setActive(false);
   if (section === 'fields' && state.introDone) {
     ui.mode.value = 'seq';
@@ -2466,8 +2472,9 @@ async function boot() {
     }
     if (!qs0.has('step') && qs0.get('shot') !== 'uavs') await loadStepInner(Math.max(1, Math.round(STEPS * 0.6)));
   })().catch((e) => {
-    dataError = e;
+    dataError = e;fieldInitializationError=e;
   });
+  fieldPreparation=dataReady;dataReady.then(()=>{fieldPreparation=null;});
 
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
@@ -2840,8 +2847,9 @@ async function boot() {
     });
     setupTransportUI();
   }
-  await dataReady;
-  if (dataError) throw dataError;
+  // The UAV replay already carries its wind samples and collision evidence.
+  // Let its city view open while independent field masks load in the background.
+  if(qs0.get('shot')!=='uavs'||!HAS_UAV_LAYER||LITE){await dataReady;if(dataError)throw dataError;}
   ui.loading.classList.add('hide');
   try { const saved = JSON.parse(sessionStorage.getItem('canopy-download-timing') || 'null'); if(saved && Date.now()-saved.finished<600000){ const seconds=Math.round((Date.now()-saved.started)/1000);const download=Math.round((saved.finished-saved.started)/1000);const note=document.createElement('div');note.textContent=`Ready in ${Math.floor(seconds/60)}m ${seconds%60}s · Download ${Math.floor(download/60)}m ${download%60}s`;note.style.cssText='position:fixed;bottom:90px;left:24px;padding:10px 14px;background:#142a32dd;color:#e4ebe4;font:12px system-ui;z-index:15;border-radius:6px';document.body.append(note);setTimeout(()=>note.remove(),15000);sessionStorage.removeItem('canopy-download-timing');} } catch {}
 
