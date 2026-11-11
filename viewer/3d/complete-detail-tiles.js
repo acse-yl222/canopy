@@ -10,6 +10,7 @@ export function createDetailTiles({scene, coarse, indexUrl, priorityCentre = nul
   coarse.visible = false;
   const progress = {loaded: 0, total: 0, complete: false, errors: []};
   const loaded = [];
+  let tileIndex=[];
   const badge = document.createElement('div');
   badge.id = 'complete-geometry-status';
   badge.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:30;background:#10202ee8;color:white;padding:8px 12px;border-radius:6px;font:13px sans-serif;pointer-events:none';
@@ -24,7 +25,7 @@ export function createDetailTiles({scene, coarse, indexUrl, priorityCentre = nul
   const ready = (async () => {
     const response = await fetch(indexUrl);
     if (!response.ok) throw new Error(`Geometry index HTTP ${response.status}`);
-    const index = await response.json();
+    const index = await response.json();tileIndex=index.tiles;
     const jobs = [];
     const tiles = [...index.tiles];
     if(priorityCentre) tiles.sort((a,b)=>Math.hypot(a.centre_xz[0]-priorityCentre[0],a.centre_xz[1]-priorityCentre[2])-Math.hypot(b.centre_xz[0]-priorityCentre[0],b.centre_xz[1]-priorityCentre[2]));
@@ -63,7 +64,7 @@ export function createDetailTiles({scene, coarse, indexUrl, priorityCentre = nul
     status(); onChange();
     return loaded.length;
   })().catch(error => {progress.errors.push(String(error)); status(); console.error(error); return 0;});
-  return {ready, group, progress, get loaded() {return [...loaded];},
+  return {ready, group, progress, hasPoints(points) {if(!tileIndex.length)return false;const needed=new Set();for(const p of points){const tile=tileIndex.find(t=>Math.abs(p[0]-t.centre_xz[0])<=t.half_m&&Math.abs(p[2]-t.centre_xz[1])<=t.half_m);if(!tile)return false;needed.add(tile.id);}return [...needed].every(id=>loaded.includes(id));}, get loaded() {return [...loaded];},
     update() {coarse.visible = false;},
     setEnabled(on) {group.visible = on; coarse.visible = false; onChange();}};
 }

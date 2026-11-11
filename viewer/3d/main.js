@@ -2806,6 +2806,7 @@ async function boot() {
       sceneId: SCENE.id,
       configURL: SCENE.uav?.config ? SCENE.url(SCENE.uav.config) : undefined,
     });
+    if(uavLayer.uavMode==='wind_astar'&&!LITE)uavLayer.geometryReady=()=>detailTiles?.hasPoints(uavLayer.selectedRoute.points_enu_m.map(p=>[p[0],p[2],-p[1]]))??false;
     const query = new URLSearchParams(location.search);
     if (query.has('t')) uavLayer.update(+query.get('t'));
     applyReplayLayers();
