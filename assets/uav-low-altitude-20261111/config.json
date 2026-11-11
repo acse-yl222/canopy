@@ -1,0 +1,6 @@
+{
+  "mode": "wind_astar",
+  "routes": "routes.json",
+  "evidence": "evidence.json",
+  "default_route": "S038-S048"
+}

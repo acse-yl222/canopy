@@ -1,0 +1,61 @@
+{
+  "run_id": "uav_low_altitude_20261111",
+  "summary": {
+    "attempted": 336,
+    "total": 336,
+    "passed": 336,
+    "failed": 0,
+    "elapsed_s": 8.4,
+    "connected_stations": 100,
+    "blocked_straight_routes": 108,
+    "maximum_agl_m": 25.866504503333047,
+    "building_detour_routes": 80
+  },
+  "algorithm": "Wind-weighted A* on an 8 m terrain-following cruise surface with checked vertical takeoff/landing legs",
+  "wind": {
+    "sha256": "46f15e1a88094488bee20b2a65c37487e85e53cd9d4f074fde57f0c0cc03b27c",
+    "frame": "ENU",
+    "frozen_model_time_s": 7500,
+    "origin_enu_m": [
+      -4098,
+      -4098,
+      -2
+    ],
+    "cell_m": 8,
+    "terrain_adapter": "Sample original flat-geometry field at local AGL. Wind not recomputed on terrain-restored geometry. No CFD reference validation."
+  },
+  "provenance": {
+    "files": {
+      "ground_mesh_m_yx.npy": "a111e7f384b4701884227fb948ea8c043e8213881542288f3b657377fa21aa58",
+      "height_m.npy": "7fd618e1b6a2b4345c040e10e78f4a7736ccedfa77dd99b873a355c4877f5b91",
+      "bird_landcover_2m.npz": "282f1a8c67b1558127baf1cbd255530912bbc85c6ca8b05b1b012609a6dad249",
+      "asphalt_8m_yx.npy": "5fd8c9606225f385413c94fed9f40e804f4c9ca34ad857db9c1f342effc02c57",
+      "metadata.json": "19e0fe0626458ba6874a2dba826c4e5140865e020426b1ac16b9b825c74056d6"
+    },
+    "coordinate_frame": "ENU metres",
+    "origin_enu_xy_m": [
+      -4096,
+      -4096
+    ],
+    "fine_cell_m": 2,
+    "planner_cell_m": 8,
+    "nominal_cruise_agl_m": 24,
+    "ceiling_agl_m": 40,
+    "horizontal_padding_m": 4,
+    "vertical_clearance_m": 3,
+    "station_policy": "100 synthetic ground sites, one per 10x10 domain stratum; exclude water, roads, building/tree columns; not surveyed or licensed landing sites",
+    "geometry_limits": "2.5D column approximation from terrain-restored meshes; cannot represent underpasses or overhangs"
+  },
+  "limitations": [
+    "Synthetic station locations, not real landing sites.",
+    "Static 3D model wind at 7500 s; no gust/forecast or rotor dynamics.",
+    "Routes are optimal only on the constrained 8 m cruise surface with endpoint-averaged wind costs; not arbitrary 3D trajectories.",
+    "Collision evidence covers the rasterized 2.5D geometry, not exact mesh, wires or moving objects.",
+    "Time is kinematic segment integration, not measured flight performance.",
+    "Only selected neighbouring station pairs are precomputed; not all 9900 ordered pairs."
+  ],
+  "graph": "100 stations strongly connected via 336 directed neighbour routes",
+  "source_sha256": "0fdcb5ac1881398ce978fce3593104eb9a21cb4e2c178e9c7b51e97c7bbfd29b",
+  "route_export_sha256": "c4d502aa62d1c7808263f15fe7683d494b0044ffbb3d0487b07d97eacc39d6ce",
+  "validation": "All 336 exported routes passed conservative cruise-cell clearance and 0.5 m sampling against 2 m terrain/building/tree columns. No failed paths are displayed."
+}

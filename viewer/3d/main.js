@@ -1422,6 +1422,7 @@ function setRateOptions(kind, value) {
 ui.play.addEventListener('click', () => {
   if(section==='campus'&&tour.shot==='birds'&&window.canopyBirds){window.canopyBirds.toggle();return;}
   if (section === 'campus' && tour.shot === 'traffic' && corridorContext) {corridorContext.setPlaying(!corridorContext.playing);return;}
+  if(section==='campus'&&tour.shot==='uavs'&&uavLayer?.uavMode==='wind_astar'){uavLayer.playing=!uavLayer.playing;return;}
   if (section === 'campus' && replayLayer) {
     replayLayer.playing = !replayLayer.playing;
     ui.play.textContent = replayLayer.playing ? '❚❚' : '▶';
@@ -1785,12 +1786,13 @@ const TOUR_SHOTS = {
   },
   uavs: {
     fixed: () => {
+      if(uavLayer?.uavMode==='wind_astar')return uavLayer.viewPose;
       const d = fitDistance();
       const target = domainCentre.clone();
       return { pos: target.clone().add(new THREE.Vector3(0, d * 0.866, d * 0.5)), target };
     },
     dur: 20000,
-    label: () => `${SCENE.title} · Wave PDE UAV flights`,
+    label: () => `${SCENE.title} · ${SCENE.uav?.label ?? 'Wave PDE UAV flights'}`,
     time: () =>
       uavLayer ? `Flights ${timeString(uavLayer.t)} · ${uavLayer.speed}×` : 'Loading flights',
   },
@@ -1863,7 +1865,7 @@ function startTour(shot = 'overview') {
   tour.paused = false;
   tour.shot = shot;
   tour.t0 = performance.now();
-  tour.dur = TOUR_SHOTS[shot].dur;
+  tour.dur = shot==='uavs'&&uavLayer?.uavMode==='wind_astar' ? Infinity : TOUR_SHOTS[shot].dur;
   if (first) tour.az = THREE.MathUtils.degToRad(-150);
   ui.stage.textContent = TOUR_SHOTS[shot].label();
   ui.info.textContent =
@@ -1885,11 +1887,11 @@ function startTour(shot = 'overview') {
   const p = tourPose(tour.az);
   if (camera.position.distanceTo(p.pos) > 50) {
     flyTo(p, 2600, () => {
-      controls.enabled = false;
+      controls.enabled = shot==='uavs'&&uavLayer?.uavMode==='wind_astar';
       tour.t0 = performance.now();
     });
   } else {
-    controls.enabled = false;
+    controls.enabled = shot==='uavs'&&uavLayer?.uavMode==='wind_astar';
     flight = null;
   }
   if (shot === 'uavs' && uavLayer) {
@@ -1906,7 +1908,7 @@ function startTour(shot = 'overview') {
   setSectionUI();
 }
 function updateTour(now, dt) {
-  if(SCENE.id==='imperial_corridor_8km'&&tour.shot==='birds')return;
+  if(SCENE.id==='imperial_corridor_8km'&&(tour.shot==='birds'||tour.shot==='uavs'&&uavLayer?.uavMode==='wind_astar'))return;
   if (!tour.active || flight) return;
   if (!tour.paused && !TOUR_SHOTS[tour.shot].fixed)
     tour.az += dt * (tour.shot === 'overview' ? 0.09 : 0.05);
@@ -2307,7 +2309,7 @@ let detailTiles = null; // All detailed tiles and landmarks stay resident in ful
 function animate(now) {
   requestAnimationFrame(animate);
   if (!detailTiles && MODEL.detail_tiles && !LITE && model.children.length) {
-    detailTiles = createDetailTiles({ scene, camera, coarse: model, indexUrl: SCENE.url(MODEL.detail_tiles), onChange: invalidate });
+    detailTiles = createDetailTiles({ scene, camera, coarse: model, priorityCentre: qs0.get('shot')==='uavs' ? SCENE.uav?.focus_world_m : null, indexUrl: SCENE.url(MODEL.detail_tiles), onChange: invalidate });
     window.cityDetailTiles = detailTiles;
     detailTiles.setEnabled(ui.lModel.checked);
   }
@@ -2375,8 +2377,8 @@ function animate(now) {
     }
   }
   if (uavLayer) {
-    uavLayer.setVisible(section !== 'fields' && !window.cityTools?.current);
-    if (uavLayer.group.visible) uavLayer.tick(elapsed / 1000);
+    uavLayer.setVisible(section !== 'fields' && !window.cityTools?.current && (uavLayer.uavMode!=='wind_astar'||tour.shot==='uavs'));
+    if (uavLayer.group.visible) { uavLayer.tick(elapsed / 1000); if(uavLayer.uavMode==='wind_astar'){invalidate();ui.step.value=uavLayer.t;ui.step.max=uavLayer.duration;ui.timeLabel.textContent=`Flight ${uavLayer.t.toFixed(1)} / ${uavLayer.duration.toFixed(1)} s`;ui.stats.textContent=uavLayer.stats;ui.play.textContent=uavLayer.playing?'❚❚':'▶';} }
   }
   updateFlight(now);
   if (controls.enabled) controls.update();
@@ -2462,7 +2464,7 @@ async function boot() {
       if (layerInvalid[key].length !== LG[key].w * LG[key].h)
         throw new Error(`Invalid ${key} mask dimensions`);
     }
-    if (!qs0.has('step')) await loadStepInner(Math.max(1, Math.round(STEPS * 0.6)));
+    if (!qs0.has('step') && qs0.get('shot') !== 'uavs') await loadStepInner(Math.max(1, Math.round(STEPS * 0.6)));
   })().catch((e) => {
     dataError = e;
   });
@@ -2793,6 +2795,7 @@ async function boot() {
     uavLayer = await createUavLayer({
       scene,
       camera,
+      controls,
       sceneId: SCENE.id,
       configURL: SCENE.uav?.config ? SCENE.url(SCENE.uav.config) : undefined,
     });

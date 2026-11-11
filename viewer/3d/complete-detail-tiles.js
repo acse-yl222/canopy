@@ -3,7 +3,7 @@ import {drapeBuildings} from './corridor-terrain.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-export function createDetailTiles({scene, coarse, indexUrl, onChange = () => {}}) {
+export function createDetailTiles({scene, coarse, indexUrl, priorityCentre = null, onChange = () => {}}) {
   const group = new THREE.Group();
   group.name = 'complete_detail_geometry';
   scene.add(group);
@@ -26,7 +26,9 @@ export function createDetailTiles({scene, coarse, indexUrl, onChange = () => {}}
     if (!response.ok) throw new Error(`Geometry index HTTP ${response.status}`);
     const index = await response.json();
     const jobs = [];
-    for (const tile of index.tiles) {
+    const tiles = [...index.tiles];
+    if(priorityCentre) tiles.sort((a,b)=>Math.hypot(a.centre_xz[0]-priorityCentre[0],a.centre_xz[1]-priorityCentre[2])-Math.hypot(b.centre_xz[0]-priorityCentre[0],b.centre_xz[1]-priorityCentre[2]));
+    for (const tile of tiles) {
       const root = new THREE.Group(); root.name = `detail:${tile.id}`; group.add(root);
       const files = [tile.file, ...(tile.landmarks || []).map(l => l.file)].filter(Boolean);
       let remaining = files.length;

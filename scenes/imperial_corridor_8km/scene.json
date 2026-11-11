@@ -4348,5 +4348,16 @@
       "compressed_bytes": 5618954,
       "method": "Majority of valid 2x2 source cells; ties shadowed"
     }
+  },
+  "uav": {
+    "enabled": true,
+    "focus_world_m": [
+      2042,
+      42,
+      573
+    ],
+    "config": "../../assets/uav-low-altitude-20261111/config.json",
+    "label": "Wind-aware low-altitude UAV",
+    "description": "100 synthetic ground stations · 336 checked wind-aware routes · maximum 40 m above ground · choose a building detour and follow the UAV"
   }
 }

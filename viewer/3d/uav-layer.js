@@ -5,12 +5,13 @@ import { loadRandomUav } from './random-uav.mjs';
 import { createActorLayer } from '../../agents/demo_rev02/actors/actor-layer.js';
 import { addStations } from '../../agents/demo_rev02/stations.js';
 
-export async function createUavLayer({ scene, sceneId, configURL: selectedConfigURL, camera }) {
+export async function createUavLayer({ scene, sceneId, configURL: selectedConfigURL, camera, controls }) {
   const prefix = import.meta.url.includes('/src/visualization/legacy/') ? '../../../../../' : '../../';
   const configURL = selectedConfigURL ? new URL(selectedConfigURL, import.meta.url) : new URL(`${prefix}project/${sceneId}/configs/uav_visualization.json`, import.meta.url);
   const response = await fetch(configURL);
   if (!response.ok) throw Error(`UAV configuration: ${response.status}`);
   const config = await response.json();
+  if(config.mode === 'wind_astar') { const {createWindUavLayer} = await import('./wind-uav-layer.js'); return createWindUavLayer({scene,camera,controls,config,configURL}); }
   const flightData = await loadRandomUav(new URL(config.routes, configURL), { count: config.uav_count, seed: config.seed, routeLimit: config.route_limit });
   const group = new THREE.Group(); group.name = `${sceneId} Wave PDE flights`;
   const actors = await createActorLayer({ scene: group, carCapacity: 1, uavCapacity: flightData.model.count,
