@@ -4352,12 +4352,12 @@
   "uav": {
     "enabled": true,
     "focus_world_m": [
-      2875.119,
-      22.749,
-      508.746
+      3480.33,
+      25.946,
+      259.46
     ],
-    "config": "../../assets/uav-wavepde-20261111/config.json",
+    "config": "../../assets/uav-wavepde-4m-20261111/config.json",
     "label": "WavePDE low-altitude UAV",
-    "description": "Original WavePDE solver · 100 synthetic stations · 336 checked neighbour routes · maximum 40 m above ground · choose a building example and follow the UAV"
+    "description": "Original WavePDE solver · 100 synthetic stations · expanded checked neighbour routes · maximum 25 m above ground · choose a building example and follow the UAV"
   }
 }

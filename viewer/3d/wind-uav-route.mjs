@@ -19,7 +19,7 @@ export function validateReplay(data) {
   for(const r of data.routes){
     if(routeIds.has(r.id)||!ids.has(r.from)||!ids.has(r.to))throw Error('Invalid route identity');routeIds.add(r.id);
     const n=r.points_enu_m.length;
-    if(n<2||r.times_s.length!==n||r.wind_enu_mps.length!==n||r.times_s[0]!==0||!r.audit.passed||r.audit.max_agl_m>40)throw Error('Invalid route evidence');
+    if(n<2||r.times_s.length!==n||r.wind_enu_mps.length!==n||r.times_s[0]!==0||!r.audit.passed||r.audit.max_agl_m>(data.summary?.ceiling_agl_m??40))throw Error('Invalid route evidence');
     if(!r.points_enu_m.flat().every(Number.isFinite)||!r.wind_enu_mps.flat().every(Number.isFinite)||!r.times_s.every(Number.isFinite))throw Error('Non-finite route data');
     if(r.times_s.some((v,i)=>i>0&&v<=r.times_s[i-1]))throw Error('Non-increasing flight time');
   }

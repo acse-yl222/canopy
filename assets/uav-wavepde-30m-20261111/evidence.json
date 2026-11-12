@@ -1,0 +1,1252 @@
+{
+  "run_id": "uav_wavepde_30m_20261111",
+  "summary": {
+    "stations": 100,
+    "requested_routes": 800,
+    "validated_routes": 720,
+    "failed_routes": 80,
+    "building_detour_routes": 635,
+    "lateral_avoidance_examples": 98,
+    "max_agl_m": 27.882800411987304,
+    "ceiling_agl_m": 30,
+    "solver_statuses": {
+      "reached": 720
+    },
+    "strongly_connected": true,
+    "robust_recovery_used": false,
+    "failed_statuses": {
+      "cycle": 49,
+      "blocked_step": 19,
+      "no_arrival": 12
+    }
+  },
+  "algorithm": "Original WavePDE convected wave solve + characteristic tracing",
+  "provenance": {
+    "solver": "wavepde.torch_backend.solver.solve + wavepde.torch_backend.tracing.trace_paths",
+    "robust": false,
+    "ceiling_agl_m": 30,
+    "planning_ceiling_agl_m": 28,
+    "wave": {
+      "c0": 15,
+      "cz_up": 6,
+      "cz_down": 4,
+      "wind": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dt": 0.2,
+      "n_steps": 1400,
+      "pulse_t0_steps": 60,
+      "pulse_tau_steps": 8,
+      "source_sigma_cells": 1.0,
+      "sponge_layers": 4,
+      "sponge_strength": 0.3,
+      "min_peak_amp": 1e-08,
+      "diffusivity_m2_s": 0.0,
+      "reg_z_low": 30.0,
+      "reg_z_full": 40.0,
+      "reg_low_factor": 1
+    },
+    "spacing_m": [
+      8.0,
+      8.0,
+      4.0
+    ],
+    "grid": [
+      512,
+      512,
+      32
+    ],
+    "waveform": "gaussian_long",
+    "wind": {
+      "sha256": "46f15e1a88094488bee20b2a65c37487e85e53cd9d4f074fde57f0c0cc03b27c",
+      "frame": "ENU",
+      "frozen_time_s": 7500,
+      "terrain_adapter": "Original flat-geometry wind sampled at local AGL; not recomputed on restored terrain"
+    },
+    "solver_revision": "6ccaa83444ef05bf375d30e0c3b2732f200e049b",
+    "solver_files": {
+      "src/wavepde/torch_backend/planner.py": "b9117ff7dd1ca59463fda32aa734cf7d2a1f8ecdb2fc501f584dbb5880ac5eff",
+      "src/wavepde/torch_backend/solver.py": "41c6fbb46c10fc542f63fd13395aed4676f6b3d984dd6091d32c7bbe96c5e75b",
+      "src/wavepde/torch_backend/material_solver.py": "bfbea066134d84f3b516866284df6376d84e87bb24880cadd65221713111d6d9",
+      "src/wavepde/torch_backend/__main__.py": "831b6150381ae4e7a26b0d7a487d3770461d88b3c0c6d9be2b67ab413520dbd3",
+      "src/wavepde/torch_backend/robust_tracing.py": "c2b3487568d8c3332700c2b20b241f6617891eb8c8ba0829849214f1e099d5d4",
+      "src/wavepde/torch_backend/geometry.py": "20eba6308a427e933e75fea8889c506201cc8fe714498da66f19fd680fd58b91",
+      "src/wavepde/torch_backend/tracing.py": "a0a72750a1d4a8fcfe512b104c22c8973aff7d6865036162b288d96dac5281ad",
+      "src/wavepde/torch_backend/fields.py": "9b395a38f60df7a05ae7fa8fdca7ea59394094cd3130e9638e6357a91f42d4b0",
+      "src/wavepde/torch_backend/__init__.py": "06f5edaffb5d8c7a198f8fb05a18dfe799a3002986179a2847a594337077b24e",
+      "src/wavepde/torch_backend/config.py": "cab3cd5dc27d23db7b17509e3f794b117805d0cc6aceb13ec83b5345929b7a02",
+      "src/wavepde/torch_backend/convfem.py": "fd2cbab053499d0bcae3f33dd7befc47cd5c02af5db2426d879cae75a5996ab1"
+    },
+    "runner_sha256": "fb7d114bb8f0eaa21594b862dbf30c35bdf8eae406d4a81865acb8051901bbd5",
+    "input_sha256": "19d6e47c812a6cc81aac09d583d1ff40037fea4a8277c7a1631992471a23ef8d",
+    "versions": {
+      "torch": "2.14.0+cu130",
+      "numpy": "2.5.3"
+    },
+    "trace_options": {
+      "smoothing_m": 8,
+      "step_m": 4,
+      "terminal_m": 24,
+      "max_steps": 4000,
+      "extension": "local",
+      "boundary_projection": true,
+      "max_step_halvings": 2,
+      "integrator": "euler"
+    }
+  },
+  "limitations": [
+    "Original WavePDE solve and plain characteristic tracing; no A* paths or graph-search fallback. Only successful, collision-checked routes are displayed; failed attempts remain in the retained run.",
+    "Each source uses a 4096 x 4096 m local crop with 8 x 8 x 4 m voxels. This is not a full-domain global-optimality or all-9900-pairs result.",
+    "PDE first-peak arrival time is retained separately. Playback time integrates the recorded path using the solver airspeed ellipsoid and frozen wind; it is not a measured flight time.",
+    "Frozen 3-D model wind at 7500 s is transferred by local height above terrain from the original flat geometry; it was not recomputed or validated by CFD on the restored terrain.",
+    "100 synthetic ground stations with 12 m takeoff and landing gates. Flight ceiling 30 m AGL; no real landing-site survey or vehicle-dynamics validation.",
+    "Collision checks use conservative 4 m horizontal / 3 m vertical planning padding and 0.5 m path sampling against 2 m terrain/building/tree columns. Columns cannot represent underpasses, wires or moving obstacles.",
+    "Building examples mean the straight reference at the same gates intersects building columns. A validated path can avoid a building laterally or vertically within the ceiling."
+  ],
+  "route_export_sha256": "dbbb9b9e7e3361b1fc086c4860aadb914902be21c04c0d21e0de1dcd167b50e1",
+  "failed_attempts": [
+    {
+      "id": "S008-S028",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 777,
+        "max_agl_m": 25.686559089926305,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S009-S018",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 50,
+        "max_agl_m": 18.07322421538722,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S009-S028",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 676,
+        "max_agl_m": 25.684737840359606,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S009-S029",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 412,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 5.898373140717254,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S010-S018",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 50,
+        "max_agl_m": 18.065054082769542,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S010-S028",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S019-S018",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 43,
+        "max_agl_m": 19.048584339375033,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S020-S018",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 50,
+        "max_agl_m": 19.294642805510286,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S023-S034",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 934,
+        "max_agl_m": 26.562119333791948,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S029-S040",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 576,
+        "max_agl_m": 21.507580120367066,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S030-S028",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1086,
+        "max_agl_m": 24.480195604702864,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S030-S050",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1671,
+        "max_agl_m": 26.588320135784983,
+        "min_agl_m": 4.0742812669185255,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S037-S038",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 461,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 4.865051682487376,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S037-S046",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 662,
+        "max_agl_m": 27.277036832175106,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S037-S048",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 868,
+        "max_agl_m": 26.656390905181503,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S038-S047",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 468,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 3.9056672292928845,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S038-S049",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 526,
+        "max_agl_m": 24.307616299539653,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S039-S048",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 542,
+        "max_agl_m": 27.497873803365763,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S040-S050",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 713,
+        "max_agl_m": 26.46319833274852,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S040-S060",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S045-S055",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 721,
+        "max_agl_m": 23.080265829992292,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S046-S037",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 466,
+        "max_agl_m": 24.145158194657427,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S047-S038",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 454,
+        "max_agl_m": 20.641678072451548,
+        "min_agl_m": 11.707257556875515,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S048-S037",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 423,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 4.172684965387663,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S048-S039",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1367,
+        "max_agl_m": 26.31590883138812,
+        "min_agl_m": 12.07306521491109,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S048-S059",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 798,
+        "max_agl_m": 27.383770912358365,
+        "min_agl_m": 6.5167152224464076,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S049-S060",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 499,
+        "max_agl_m": 25.96460532566703,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S050-S048",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S050-S049",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 570,
+        "max_agl_m": 27.15010139359272,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S050-S059",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 571,
+        "max_agl_m": 24.37156388589416,
+        "min_agl_m": 11.793478583896174,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S050-S069",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S053-S064",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 453,
+        "max_agl_m": 13.834891760999867,
+        "min_agl_m": 8.388328841420982,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S056-S067",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 582,
+        "max_agl_m": 26.427960942175545,
+        "min_agl_m": 12.07374972817778,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S057-S066",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 653,
+        "max_agl_m": 26.21839417108348,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S057-S067",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 656,
+        "max_agl_m": 26.596515784597365,
+        "min_agl_m": 11.163264776824114,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S058-S048",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 548,
+        "max_agl_m": 24.103717424194812,
+        "min_agl_m": 11.711640460190395,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S058-S067",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 499,
+        "max_agl_m": 24.010969448372542,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S058-S069",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S059-S068",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 492,
+        "max_agl_m": 24.633592855762792,
+        "min_agl_m": 12.112629387840954,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S059-S069",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1003,
+        "max_agl_m": 26.08925674756857,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S059-S070",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 777,
+        "max_agl_m": 26.121894082598487,
+        "min_agl_m": 12.047259844086724,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S060-S040",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S060-S049",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 433,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 4.895453683749285,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S060-S058",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S060-S069",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 691,
+        "max_agl_m": 26.422310210888874,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S060-S080",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S067-S056",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 984,
+        "max_agl_m": 27.90083772895902,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S067-S078",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 525,
+        "max_agl_m": 27.88356317565092,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S068-S059",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 554,
+        "max_agl_m": 23.5230535889447,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S068-S067",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 332,
+        "max_agl_m": 26.225798603704696,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S068-S077",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 413,
+        "max_agl_m": 12.17970076603288,
+        "min_agl_m": 4.9545390323958145,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S068-S078",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 517,
+        "max_agl_m": 25.194052429038216,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S068-S079",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 738,
+        "max_agl_m": 24.605241637657997,
+        "min_agl_m": 10.270803045401045,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S058",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S069-S059",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 489,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 5.828491985408775,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S060",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 609,
+        "max_agl_m": 26.62255281801803,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S068",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1313,
+        "max_agl_m": 25.715950547412064,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S070",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 712,
+        "max_agl_m": 26.054167158169868,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S078",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 586,
+        "max_agl_m": 27.022932209755695,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S069-S079",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1196,
+        "max_agl_m": 27.581175112934815,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S070-S050",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 1129,
+        "max_agl_m": 27.025477847704273,
+        "min_agl_m": 4.948719862245447,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S070-S059",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 604,
+        "max_agl_m": 25.637228608949535,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S070-S060",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 717,
+        "max_agl_m": 26.637990714529245,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S070-S068",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S077-S068",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 393,
+        "max_agl_m": 27.753741489377617,
+        "min_agl_m": 12.11920890848176,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S078-S069",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 574,
+        "max_agl_m": 26.96525560571404,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S078-S089",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 988,
+        "max_agl_m": 12.31300334344143,
+        "min_agl_m": 5.850690346314792,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S079-S068",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 684,
+        "max_agl_m": 27.68123959985639,
+        "min_agl_m": 11.939991698387999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S079-S069",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 370,
+        "max_agl_m": 26.683496561526084,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S079-S078",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 263,
+        "max_agl_m": 24.198890337997497,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S080-S060",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    },
+    {
+      "id": "S080-S078",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 79,
+        "max_agl_m": 26.792536552766535,
+        "min_agl_m": 11.981599948886334,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S080-S090",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 2003,
+        "max_agl_m": 23.130654488042715,
+        "min_agl_m": 11.894828183248919,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S080-S100",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 3975,
+        "max_agl_m": 24.94890038862021,
+        "min_agl_m": 11.863978676759501,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S088-S099",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 952,
+        "max_agl_m": 25.375690534102688,
+        "min_agl_m": 7.485698686020939,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S089-S078",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 479,
+        "max_agl_m": 27.4784494657967,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S089-S098",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 707,
+        "max_agl_m": 22.358847039487898,
+        "min_agl_m": 7.087756477169414,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S090-S078",
+      "status": "blocked_step",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 88,
+        "max_agl_m": 24.346229846488924,
+        "min_agl_m": 12.149999999999999,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S096-S076",
+      "status": "cycle",
+      "closed_voxel_clear": true,
+      "endpoints": false,
+      "audit": {
+        "passed": true,
+        "samples": 403,
+        "max_agl_m": 12.149999999999999,
+        "min_agl_m": 5.028890434018415,
+        "obstacle_violations": 0,
+        "sampling_m": 0.5,
+        "collision_model": "2 m terrain/building/tree columns, with conservative 8x8x4 m planning voxels padded 4 m horizontally and 3 m vertically"
+      }
+    },
+    {
+      "id": "S100-S078",
+      "status": "no_arrival",
+      "closed_voxel_clear": false,
+      "endpoints": false,
+      "audit": {
+        "passed": false,
+        "reason": "empty partial"
+      }
+    }
+  ],
+  "validation": "Displayed original WavePDE traces reached; original closed-voxel segment checks passed; rounded browser paths independently rechecked every 0.5 m against 2 m terrain/building/tree columns. Connectivity and failed attempt counts are reported in summary."
+}
